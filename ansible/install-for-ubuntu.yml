@@ -1,0 +1,44 @@
+---
+- name: install neovim and dependencies
+  hosts: ubuntu
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: install software-proporties-common
+      apt:
+        package: software-properties-common
+        state: present
+
+    - name: add neovim repository
+      shell: sudo add-apt-repository ppa:neovim-ppa/stable
+
+    - name: install neovim
+      apt:
+        package: neovim
+        state: latest
+        update_cache: yes
+
+    - name: set neovim as default editor
+      alternatives:
+        name: editor
+        path: /usr/bin/nvim
+        priority: 60
+
+    - name: alias vim to neovim
+      alternatives:
+        name: vim
+        path: /usr/bin/nvim
+        priority: 60
+
+    - name: neovim python dependencies 1/4
+      apt: { package: python-dev }
+
+    - name: neovim python dependencies 2/4
+      apt: { package: python-pip }
+
+    - name: neovim python dependencies 3/4
+      apt: { package: python3-dev }
+
+    - name: neovim python dependencies 4/4
+      apt: { package: python3-pip }

@@ -1,0 +1,51 @@
+---
+- name: set up neovim plugins and scripts
+  hosts: neovim
+  vars:
+    home:          "{{ ansible_env.HOME }}"
+    dotfiles_path: "{{ home }}/dotfiles"
+    config_path:   "{{ home }}/.config/nvim"
+    pathogen_url: https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+
+  tasks:
+    - name: create config folders
+      file:
+        path: "{{ config_path }}/{{ item }}"
+        state: directory
+      with_items:
+        - bundle
+        - autoload
+
+    - name: install pathogen
+      get_url:
+        url: "{{ pathogen_url }}"
+        dest: "{{ config_path }}/autoload/pathogen.vim"
+
+    - name: pull dotfiles repo
+      git:
+        repo: ssh://git@github.com/Resonious/dotfiles.git
+        dest: "{{ dotfiles_path }}"
+        depth: 1
+      register: result
+      failed_when: result|failed and not 'Local modifications exist' in result.msg
+
+    - name: create symlink to init.vim
+      file:
+        src: "{{ dotfiles_path }}/neovim/init.vim"
+        dest: "{{ config_path }}/init.vim"
+        state: link
+
+    - name: pull plugins
+      git:
+        repo: https://github.com/{{ item }}.git
+        dest: "{{ config_path }}/bundle/{{ item.split('/')[1] }}"
+        depth: 1
+      with_items:
+        - neomake/neomake
+        - scrooloose/nerdtree
+        - vim-airline/vim-airline
+        - kchmck/vim-coffee-script
+        - neoclide/vim-jsx-improve
+        - Resonious/vim-phoenix
+        - PProvost/vim-ps1
+        - rust-lang/rust.vim

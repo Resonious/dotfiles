@@ -8,6 +8,11 @@ set expandtab
 set shiftwidth=2
 set softtabstop=2
 
+" Except in Rust and C files where they are 4 spaces!
+autocmd FileType rs setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType c setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4
+
 colorscheme phoenix
 
 function! s:randnum(max) abort
@@ -94,7 +99,7 @@ autocmd BufNewFile,BufRead * highlight myPry ctermbg=red ctermfg=yellow
 nnoremap <C-l> :TREPLSendLine<cr>
 vnoremap <C-l> :TREPLSendSelection<cr>
 
-" Syntastic stuff:
+" Syntastic stuff: (unused right now?)
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatusLineFlat()}
 set statusline+=%*

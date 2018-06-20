@@ -12,8 +12,8 @@
         dest: "{{ home }}/.tmux.conf"
         state: link
 
-    - name: copy .tmux.conf.local
+    - name: symlink .tmux.conf.local
       file:
         src: "{{ dotfiles_path }}/tmux/tmux.conf.local"
         dest: "{{ home }}/.tmux.conf.local"
-        state: file
+        state: link

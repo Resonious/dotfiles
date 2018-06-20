@@ -66,3 +66,19 @@
   handlers:
     - name: install fzf
       command: "{{ home }}/.fzf/install --key-bindings --no-completion --update-rc"
+
+# =================================================================
+
+- name: install tmux
+  hosts: ubuntu
+  vars:
+    home: "{{ ansible_env.HOME }}"
+
+  tasks:
+    - name: install tmux
+      apt:
+        package: tmux
+        state: latest
+        update_cache: yes
+      tags:
+        - tmux

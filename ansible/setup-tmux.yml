@@ -1,0 +1,19 @@
+---
+- name: Set up tmux.conf
+  hosts: ubuntu
+  vars:
+    home:          "{{ ansible_env.HOME }}"
+    dotfiles_path: "{{ home }}/dotfiles"
+
+  tasks:
+    - name: symlink .tmux.conf
+      file:
+        src: "{{ dotfiles_path }}/tmux/tmux.conf"
+        dest: "{{ home }}/.tmux.conf"
+        state: link
+
+    - name: copy .tmux.conf.local
+      file:
+        src: "{{ dotfiles_path }}/tmux/tmux.conf.local"
+        dest: "{{ home }}/.tmux.conf.local"
+        state: file

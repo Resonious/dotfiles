@@ -13,6 +13,9 @@ autocmd FileType rs setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType c setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4
 
+" gdscript uses 4-space tabs
+autocmd FileType gd setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
+
 colorscheme phoenix
 
 function! s:randnum(max) abort
@@ -27,7 +30,7 @@ elseif getcwd() =~ 'softwear-production' || getcwd() =~ 'rails' || getcwd() =~ '
   autocmd VimEnter * PhoenixRed
 elseif getcwd() =~ 'softwear-mockbot' || getcwd() =~ 'serp'
   autocmd VimEnter * PhoenixYellow
-elseif getcwd() =~ 'spree' || getcwd() =~ 'crattle' || getcwd() =~ 'Retail-Core'
+elseif getcwd() =~ 'spree' || getcwd() =~ 'crute' || getcwd() =~ 'Retail-Core'
   autocmd VimEnter * PhoenixBlue
 elseif getcwd() =~ 'www' || getcwd() =~ 'former' || getcwd() =~ 'softwear-fba' || getcwd() =~ 'amazon'
   autocmd VimEnter * PhoenixOrange

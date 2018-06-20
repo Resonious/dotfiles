@@ -9,9 +9,13 @@
       apt:
         package: software-properties-common
         state: present
+      tags:
+        - dependencies
 
     - name: add neovim repository
       shell: add-apt-repository ppa:neovim-ppa/stable
+      tags:
+        - dependencies
 
     - name: install neovim
       apt:
@@ -38,6 +42,8 @@
         - python-pip
         - python3-dev
         - python3-pip
+      tags:
+        - dependencies
 
 # =================================================================
 
@@ -54,6 +60,8 @@
         dest: "{{ home }}/.fzf"
         depth: 1
       notify: install fzf
+      tags:
+        - fzf
 
   handlers:
     - name: install fzf

@@ -5,18 +5,6 @@
   become_user: root
 
   tasks:
-    - name: install software-proporties-common
-      apt:
-        package: software-properties-common
-        state: present
-      tags:
-        - dependencies
-
-    - name: add neovim repository
-      shell: add-apt-repository ppa:neovim-ppa/stable
-      tags:
-        - dependencies
-
     - name: install neovim
       apt:
         package: neovim

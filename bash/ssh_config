@@ -1,0 +1,16 @@
+# CAEN (on campus)
+Host caen-oncampus
+  HostName oncampus-course.engin.umich.edu
+  User bnigel
+  ControlMaster auto
+  ControlPath ~/.ssh/cm_socket/%r@%h:%p
+  ControlPersist 8h
+
+# CAEN (off campus)
+Host caen
+  HostName login-course.engin.umich.edu
+  User bnigel
+  ControlMaster auto
+  ControlPath ~/.ssh/cm_socket/%r@%h:%p
+  ControlPersist 8h
+

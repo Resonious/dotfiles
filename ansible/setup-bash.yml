@@ -6,8 +6,14 @@
     dotfiles_path: "{{ home }}/dotfiles"
 
   tasks:
-    - name: symlink dotfiles/bashrc --> ~/.bashrc
+    - name: symlink dotfiles/bash/bashrc --> ~/.bashrc
       file:
         src: "{{ dotfiles_path }}/bash/bashrc"
         dest: "{{ home }}/.bashrc"
+        state: link
+
+    - name: symlink dotfiles/bash/ssh_config --> ~/.ssh/config
+      file:
+        src: "{{ dotfiles_path }}/bash/ssh_config"
+        dest: "{{ home }}/.ssh/config"
         state: link

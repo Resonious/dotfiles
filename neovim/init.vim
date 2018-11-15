@@ -79,6 +79,9 @@ nnoremap <A-r> i<Up><CR><C-\><C-n> " Alt+r to rerun last terminal command
 " Because folks don't seem to care about trailing whitespace
 :command Trailing %s/\s\+$//g
 
+" Latex stuff
+let g:tex_flavor = 'latex'
+
 " FZF!
 set rtp+=~/.fzf
 noremap <silent> <C-P> :FZF<CR>

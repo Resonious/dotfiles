@@ -1,0 +1,13 @@
+---
+- name: symlink bashrc and friends
+  hosts: bash
+  vars:
+    home:          "{{ ansible_env.HOME }}"
+    dotfiles_path: "{{ home }}/dotfiles"
+
+  tasks:
+    - name: symlink dotfiles/bashrc --> ~/.bashrc
+      file:
+        src: "{{ dotfiles_path }}/bash/bashrc"
+        dest: "{{ home }}/.bashrc"
+        state: link

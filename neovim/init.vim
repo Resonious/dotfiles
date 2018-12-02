@@ -105,17 +105,8 @@ autocmd BufNewFile,BufRead * highlight myPry ctermbg=red ctermfg=yellow
 nnoremap <C-l> :TREPLSendLine<cr>
 vnoremap <C-l> :TREPLSendSelection<cr>
 
-" Syntastic stuff: (unused right now?)
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatusLineFlat()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0 " Check on open makes vimgrep very slow
-let g:syntastic_check_on_wq = 0
-"" The linter has no idea what it's talking about
-"let g:syntastic_eruby_ruby_quiet_messages = { 'regex': 'in void context' }
-"let g:syntastic_c_include_dirs = [ 'STB', 'SDL/include', 'MRuby/include', '/Users/nigelbaillie/.rvm/rubies/ruby-2.1.10/include/ruby-2.1.10' ]
-"let g:syntastic_cpp_compiler = 'clang++'
-"let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'
+let g:neomake_cpp_enabled_makers = ['gcc']
+let g:neomake_cpp_clang_maker = {
+   \ 'exe': 'g++++',
+   \ 'args': ['-Wall', '-Wextra', '-Weverything', '-pedantic', '-Wno-sign-conversion'],
+   \ }

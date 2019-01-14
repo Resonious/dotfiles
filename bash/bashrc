@@ -138,7 +138,12 @@ alias ipm=/usr/lib/inkdrop/resources/app/ipm/bin/ipm
 alias copy='xclip -sel clip -i'
 alias paste='xclip -sel clip -o'
 
+# Vi mode
 set -o vi
+
+# Sensible bash history
+shopt -s histappend # append to .bash_history on command
+export PROMPT_COMMAND="history -a; history -n" # update history on command
 
 export PATH="$HOME/bin:$PATH"
 

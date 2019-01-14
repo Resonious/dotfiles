@@ -12,6 +12,7 @@ set softtabstop=2
 autocmd FileType rs setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType c setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType pug setlocal shiftwidth=4 tabstop=4 softtabstop=4
 
 " gdscript uses 4-space tabs
 autocmd FileType gd setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4

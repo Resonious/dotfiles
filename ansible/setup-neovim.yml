@@ -49,3 +49,4 @@
         - Resonious/vim-phoenix
         - PProvost/vim-ps1
         - rust-lang/rust.vim
+        - digitaltoad/vim-pug

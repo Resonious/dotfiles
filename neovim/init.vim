@@ -84,7 +84,7 @@ nnoremap <A-r> i<Up><CR><C-\><C-n> " Alt+r to rerun last terminal command
 let g:tex_flavor = 'latex'
 
 " FZF!
-set rtp+=~/.fzf
+set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 noremap <silent> <C-P> :FZF<CR>
 
 " Use ripgrep for vim

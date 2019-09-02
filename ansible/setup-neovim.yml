@@ -1,6 +1,6 @@
 ---
 - name: set up neovim plugins and scripts
-  hosts: neovim
+  hosts: localhost
   vars:
     home:          "{{ ansible_env.HOME }}"
     dotfiles_path: "{{ home }}/dotfiles"
@@ -50,3 +50,5 @@
         - PProvost/vim-ps1
         - rust-lang/rust.vim
         - digitaltoad/vim-pug
+        - machakann/vim-highlightedyank
+        - brooth/far.vim

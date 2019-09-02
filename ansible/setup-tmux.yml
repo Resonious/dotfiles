@@ -1,6 +1,6 @@
 ---
 - name: Set up tmux.conf
-  hosts: ubuntu
+  hosts: localhost
   vars:
     home:          "{{ ansible_env.HOME }}"
     dotfiles_path: "{{ home }}/dotfiles"

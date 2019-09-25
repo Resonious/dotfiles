@@ -52,3 +52,4 @@
         - digitaltoad/vim-pug
         - machakann/vim-highlightedyank
         - brooth/far.vim
+        - ekalinin/Dockerfile.vim

@@ -22,8 +22,8 @@ alias paste='xclip -sel clip -o'
 
 
 # Interesting R aliases from http://dwrodri.blog/posts/oct-7-Rscript-snippets.html
-alias stats 'Rscript -e "summary(as.numeric(readLines(\"stdin\")))"'   
-alias boxplot 'Rscript -e "boxplot(as.numeric(readLines(\"stdin\")))"'
+alias stats='Rscript -e "summary(as.numeric(readLines(\"stdin\")))"'   
+alias boxplot='Rscript -e "boxplot(as.numeric(readLines(\"stdin\")))"'
 
 
 # append to the history file, don't overwrite it

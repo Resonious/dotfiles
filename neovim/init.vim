@@ -1,5 +1,5 @@
 execute pathogen#infect()
-set t_Co=256
+set termguicolors
 syntax on
 filetype plugin indent on
 

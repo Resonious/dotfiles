@@ -47,9 +47,11 @@
         - kchmck/vim-coffee-script
         - neoclide/vim-jsx-improve
         - Resonious/vim-phoenix
+        - Resonious/nvim-schemer
         - PProvost/vim-ps1
         - rust-lang/rust.vim
         - digitaltoad/vim-pug
         - machakann/vim-highlightedyank
         - brooth/far.vim
         - ekalinin/Dockerfile.vim
+        - terryma/vim-multiple-cursors

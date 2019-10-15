@@ -17,46 +17,9 @@ autocmd FileType pug setlocal shiftwidth=4 tabstop=4 softtabstop=4
 " gdscript uses 4-space tabs
 autocmd FileType gd setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
-colorscheme phoenix
-
-function! s:randnum(max) abort
-  return str2nr(matchstr(reltimestr(reltime()), '\v\.@<=\d+')[1:]) % a:max
-endfunction
+autocmd VimEnter * Schemer
 
 autocmd! BufWritePost * Neomake
-
-if getcwd() =~ '-crm' || bufname("%") =~ 'Vagrantfile'
-  autocmd VimEnter * PhoenixPurple
-elseif getcwd() =~ 'softwear-production' || getcwd() =~ 'rails' || getcwd() =~ 'bundler' || getcwd() =~ 'rvm'
-  autocmd VimEnter * PhoenixRed
-elseif getcwd() =~ 'softwear-mockbot' || getcwd() =~ 'serp'
-  autocmd VimEnter * PhoenixYellow
-elseif getcwd() =~ 'spree' || getcwd() =~ 'crute' || getcwd() =~ 'Retail-Core'
-  autocmd VimEnter * PhoenixBlue
-elseif getcwd() =~ 'www' || getcwd() =~ 'former' || getcwd() =~ 'softwear-fba' || getcwd() =~ 'amazon'
-  autocmd VimEnter * PhoenixOrange
-elseif getcwd() =~ 'hub' || getcwd() =~ 'sw-config'
-  autocmd VimEnter * PhoenixGray
-elseif getcwd() =~ 'softwear-lib' || getcwd() =~ 'aatc' || getcwd() =~ 'a/r_\?u'
-  autocmd VimEnter * PhoenixGreen
-elseif getcwd() =~ 'retail'
-  autocmd VimEnter * PhoenixBlue
-else
-  let s:num = s:randnum(5)
-  if s:num == 0
-    autocmd VimEnter * PhoenixPurple
-  elseif s:num == 1
-    autocmd VimEnter * PhoenixRed
-  elseif s:num == 2
-    autocmd VimEnter * PhoenixYellow
-  elseif s:num == 3
-    autocmd VimEnter * PhoenixOrange
-  elseif s:num == 4
-    autocmd VimEnter * PhoenixGreen
-  elseif s:num == 5
-    autocmd VimEnter * PhoenixBlue
-  endif
-endif
 
 set background=dark
 " let g:airline_theme='badwolf'
@@ -93,14 +56,25 @@ if executable("rg")
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
+" Multiple cursors settings
+let g:multi_cursor_use_default_mapping = 0
+let g:multi_cursor_start_word_key      = '<C-j>'
+let g:multi_cursor_select_all_word_key = '<A-j>'
+let g:multi_cursor_start_key           = 'g<C-j>'
+let g:multi_cursor_select_all_key      = 'g<A-j>'
+let g:multi_cursor_next_key            = '<C-j>'
+let g:multi_cursor_prev_key            = '<C-k>'
+let g:multi_cursor_skip_key            = '<C-h>'
+let g:multi_cursor_quit_key            = '<Esc>'
+
 " No search result highlighting
 set nohlsearch
 
 " Highlight byebugs so I don't leave them around
-autocmd BufNewFile,BufRead * syntax match myByebug /\<byebug/
-autocmd BufNewFile,BufRead * highlight myByebug ctermbg=red ctermfg=yellow
-autocmd BufNewFile,BufRead * syntax match myPry /\<binding\.pry/
-autocmd BufNewFile,BufRead * highlight myPry ctermbg=red ctermfg=yellow
+autocmd BufNewFile,BufRead *.rb syntax match myByebug /\<byebug\>/
+autocmd BufNewFile,BufRead *.rb highlight myByebug ctermbg=red ctermfg=yellow guifg=#FF0000 guibg=#FFFF00
+autocmd BufNewFile,BufRead *.rb syntax match myPry /\<binding\.pry\>/
+autocmd BufNewFile,BufRead *.rb highlight myPry ctermbg=red ctermfg=yellow guifg=#FF0000 guibg=#FFFF00
 
 " Neoterm stuff:
 nnoremap <C-l> :TREPLSendLine<cr>

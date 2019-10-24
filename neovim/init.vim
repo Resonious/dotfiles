@@ -21,6 +21,8 @@ autocmd VimEnter * Schemer
 
 autocmd! BufWritePost * Neomake
 
+require 'colorizer'.setup()
+
 set background=dark
 " let g:airline_theme='badwolf'
 let g:airline_powerline_fonts = 1
@@ -49,6 +51,7 @@ let g:tex_flavor = 'latex'
 " FZF!
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 noremap <silent> <C-P> :FZF<CR>
+noremap <silent> <C-L> :Rg<CR>
 
 " Use ripgrep for vim
 if executable("rg")
@@ -75,10 +78,6 @@ autocmd BufNewFile,BufRead *.rb syntax match myByebug /\<byebug\>/
 autocmd BufNewFile,BufRead *.rb highlight myByebug ctermbg=red ctermfg=yellow guifg=#FF0000 guibg=#FFFF00
 autocmd BufNewFile,BufRead *.rb syntax match myPry /\<binding\.pry\>/
 autocmd BufNewFile,BufRead *.rb highlight myPry ctermbg=red ctermfg=yellow guifg=#FF0000 guibg=#FFFF00
-
-" Neoterm stuff:
-nnoremap <C-l> :TREPLSendLine<cr>
-vnoremap <C-l> :TREPLSendSelection<cr>
 
 let g:neomake_cpp_enabled_makers = ['gcc']
 let g:neomake_cpp_clang_maker = {

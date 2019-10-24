@@ -55,3 +55,5 @@
         - brooth/far.vim
         - ekalinin/Dockerfile.vim
         - terryma/vim-multiple-cursors
+        - norcalli/nvim-colorizer.lua
+        - junegunn/fzf.vim

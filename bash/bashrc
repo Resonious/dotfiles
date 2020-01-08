@@ -8,10 +8,6 @@ if [ -f /etc/profile ]; then
 fi
 
 
-# Flatpak aliases
-alias smerge='flatpak run com.sublimemerge.App'
-
-
 # vim-style input
 set -o vi
 

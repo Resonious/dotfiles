@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Tests whether or not we can infer ruby version based on Gemfile
+has_gemfile_with_ruby_version() {
+  [ -e Gemfile ] && [ -n "$(awk '/ruby /{print}' Gemfile)" ]
+}
+
+# Prints a string like "ruby_2_4" based on input or Gemfile
+ruby_version() {
+  if [ -z "$1" ]; then
+    if has_gemfile_with_ruby_version; then
+      printf 'ruby_'
+      awk '/ruby /{gsub(" .|\\.", "_"); print substr($0,1,8);}' Gemfile
+    fi
+  else
+    printf 'ruby_'
+    awk '{gsub(" .|\\.", "_"); print substr($0,1,8);}' <(echo $1)
+  fi
+}
+
+#
+# See if input is valid
+#
+if [ -z "$1" ] && ! has_gemfile_with_ruby_version; then
+  cat <<MESSAGE 1>&2
+Please either have a Gemfile with a ruby version, or specify which version you want.
+
+Example:
+  $ nixrb 2.5
+MESSAGE
+  exit 1
+fi
+
+#
+# Write temporary nix shell script
+#
+ruby=$(ruby_version $1)
+nixfile="/tmp/${ruby}_shell.nix"
+
+cat <<NIX_SHELL > "$nixfile"
+let
+  pkgs = import <nixpkgs> {};
+  ruby = pkgs.$ruby.withPackages (ps: with ps; [ pkgs.bundler ]);
+in
+  pkgs.stdenv.mkDerivation {
+    name = "${ruby}_shell";
+    src = null;
+    buildInputs = [
+      ruby
+    ];
+  }
+NIX_SHELL
+
+#
+# Start the shell
+#
+exec nix-shell "$nixfile"

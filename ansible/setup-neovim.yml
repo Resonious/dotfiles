@@ -21,13 +21,13 @@
         url: "{{ pathogen_url }}"
         dest: "{{ config_path }}/autoload/pathogen.vim"
 
-    - name: pull dotfiles repo
-      git:
-        repo: ssh://git@github.com/Resonious/dotfiles.git
-        dest: "{{ dotfiles_path }}"
-        depth: 1
-      register: result
-      failed_when: result|failed and not 'Local modifications exist' in result.msg
+        # - name: pull dotfiles repo
+        #   git:
+        #     repo: ssh://git@github.com/Resonious/dotfiles.git
+        #     dest: "{{ dotfiles_path }}"
+        #     depth: 1
+        #   register: result
+        #   failed_when: result|failed and not 'Local modifications exist' in result.msg
 
     - name: create symlink to init.vim
       file:

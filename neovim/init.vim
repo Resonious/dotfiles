@@ -27,8 +27,8 @@ set background=dark
 " let g:airline_theme='badwolf'
 let g:airline_powerline_fonts = 1
 
-tnoremap <Esc> <C-\><C-n> " Esc to exit terminal mode
-nnoremap <A-r> i<Up><CR><C-\><C-n> " Alt+r to rerun last terminal command
+" tnoremap <Esc> <C-\><C-n> " Esc to exit terminal mode
+" nnoremap <A-r> i<Up><CR><C-\><C-n> " Alt+r to rerun last terminal command
 
 " Tab for autocomplete
 " :inoremap <Tab> <C-N>

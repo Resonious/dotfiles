@@ -5,29 +5,64 @@ has_gemfile_with_ruby_version() {
   [ -e Gemfile ] && [ -n "$(awk '/ruby /{print}' Gemfile)" ]
 }
 
-# Prints a string like "ruby_2_4" based on input or Gemfile
-ruby_version() {
-  if [ -z "$1" ]; then
-    if has_gemfile_with_ruby_version; then
-      printf 'ruby_'
-      awk '/ruby /{gsub(" .|\\.", "_"); print substr($0,1,8);}' Gemfile
+# Tests whether the first argument is a ruby version
+first_arg_is_ruby_version() {
+  [ -n "$1" ] && [ "$1" != "do" ]
+}
+
+# Prints command to run (if specified)
+command_to_do() {
+  if first_arg_is_ruby_version $1; then
+    if [ "$2" == "do" ]; then
+      echo "${@:3}"
+    else
+      return 1
     fi
   else
+    if [ "$1" == "do" ]; then
+      echo "${@:2}"
+    else
+      return 1
+    fi
+  fi
+}
+
+# Prints a string like "ruby_2_4" based on input or Gemfile
+ruby_version() {
+  if first_arg_is_ruby_version $1; then
     printf 'ruby_'
     awk '{gsub(" .|\\.", "_"); print substr($0,1,8);}' <(echo $1)
+  else
+    if has_gemfile_with_ruby_version; then
+      awk '/ruby /{gsub(" .|\\.", "_"); print substr($0,1,8);}' Gemfile
+    fi
   fi
 }
 
 #
 # See if input is valid
 #
-if [ -z "$1" ] && ! has_gemfile_with_ruby_version; then
+print_help() {
   cat <<MESSAGE 1>&2
 Please either have a Gemfile with a ruby version, or specify which version you want.
 
-Example:
+Examples:
+
+  $ # Without Gemfile:
   $ nixrb 2.5
+  $ nixrb 2.5 do ruby -e 'puts RUBY_VERSION'
+
+  $ # With Gemfile:
+  $ nixrb 2.5
+  $ nixrb do ruby -e 'puts RUBY_VERSION'
 MESSAGE
+}
+if [ "$1" == "--help" ] || [ "$1" == "-h" ] || [ "$1" == "help" ]; then
+  print_help
+  exit 0
+fi
+if ! first_arg_is_ruby_version $1 && ! has_gemfile_with_ruby_version; then
+  print_help
   exit 1
 fi
 
@@ -54,4 +89,8 @@ NIX_SHELL
 #
 # Start the shell
 #
-exec nix-shell "$nixfile"
+if command_to_do $@ 1>/dev/null 2>/dev/null; then
+  exec nix-shell "$nixfile" --command "$(command_to_do $@)"
+else
+  exec nix-shell "$nixfile"
+fi

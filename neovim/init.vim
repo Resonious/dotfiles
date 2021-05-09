@@ -1,4 +1,18 @@
-execute pathogen#infect()
+call plug#begin(stdpath('data') . '/plugged')
+Plug 'Resonious/vim-phoenix'
+Plug 'Resonious/nvim-schemer'
+Plug 'preservim/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'PProvost/vim-ps1'
+Plug 'rust-lang/rust.vim'
+Plug 'digitaltoad/vim-pug'
+Plug 'machakann/vim-highlightedyank'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'junegunn/fzf.vim'
+Plug 'neomake/neomake'
+call plug#end()
+
 set termguicolors
 syntax on
 filetype plugin indent on

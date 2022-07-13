@@ -1,0 +1,45 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# vim-style input
+set -o vi
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# put ~/bin in $PATH
+export PATH="$PATH:$HOME/bin"
+
+# alternate programs
+which exa 1>/dev/null 2>/dev/null && alias ls=exa
+
+# better PS1
+color1="\[\e[38;5;52m\]"
+color2="\[\e[38;5;88m\]"
+color3="\[\e[38;5;124m\]"
+color4="\[\e[38;5;160m\]"
+bracecolor="\[\e[38;5;235m\]"
+dolorcolor="\[\e[38;5;239m\]"
+endcolor="\[\e[m\]"
+PS1="$bracecolor[$color1$GITHUB_USER$color2@$color3\h $color4\W$endcolor$bracecolor]$dolorcolor\\$\[\e[m\] "
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi

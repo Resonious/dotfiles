@@ -10,7 +10,20 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'ekalinin/Dockerfile.vim'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/fzf.vim'
-Plug 'neomake/neomake'
+Plug 'posva/vim-vue'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
+Plug 'tikhomirov/vim-glsl'
+Plug 'cespare/vim-toml'
+Plug 'leafgarland/typescript-vim'
+Plug 'kchmck/vim-coffee-script'
+Plug 'tpope/vim-rails'
+Plug 'chr4/nginx.vim'
+Plug 'mattn/emmet-vim'
+Plug 'jaredgorski/fogbell.vim'
+Plug 'eikesr/vim-flatdata'
+Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
+"Plug 'neomake/neomake', {'branch': 'main'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 set termguicolors
@@ -27,19 +40,20 @@ autocmd FileType rs setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType c setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType pug setlocal shiftwidth=4 tabstop=4 softtabstop=4
+autocmd FileType php setlocal shiftwidth=4 tabstop=4 softtabstop=4
 
 " gdscript uses 4-space tabs
 autocmd FileType gd setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 autocmd VimEnter * Schemer
 
-autocmd! BufWritePost * Neomake
-
 require 'colorizer'.setup()
 
 set background=dark
 " let g:airline_theme='badwolf'
 let g:airline_powerline_fonts = 1
+
+let g:user_emmet_leader_key='<C-Z>'
 
 " tnoremap <Esc> <C-\><C-n> " Esc to exit terminal mode
 " nnoremap <A-r> i<Up><CR><C-\><C-n> " Alt+r to rerun last terminal command
@@ -48,6 +62,8 @@ let g:airline_powerline_fonts = 1
 " :inoremap <Tab> <C-N>
 
 :noremap <C-S> :w<cr>
+:noremap <C-C> "+y
+:noremap <C-V> "+p
 
 " Idiotproofing
 :command W w
@@ -59,17 +75,26 @@ let g:airline_powerline_fonts = 1
 " Because folks don't seem to care about trailing whitespace
 :command Trailing %s/\s\+$//g
 
+:command Rubocop !rubocop -A %
+:command CopyFile !echo % | wl-copy
+
+:noremap <C-T> :NERDTree<cr>:tabnew<cr>:term<cr>:tabprevious<cr>
+
 " Latex stuff
 let g:tex_flavor = 'latex'
 
 " FZF!
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -g !*.svg -g !/vendor -g !*.lock -g !/db -g !*.json -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
 noremap <silent> <C-P> :FZF<CR>
 noremap <silent> <C-L> :Rg<CR>
 
 " Use ripgrep for vim
 if executable("rg")
-  set grepprg=rg\ --vimgrep\ --no-heading
+  set grepprg=rg\ --vimgrep\ --no-heading\ -g\ !*.svg\ -g\ !/spec/cassettes\ -g\ !/vendor
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 
@@ -93,8 +118,48 @@ autocmd BufNewFile,BufRead *.rb highlight myByebug ctermbg=red ctermfg=yellow gu
 autocmd BufNewFile,BufRead *.rb syntax match myPry /\<binding\.pry\>/
 autocmd BufNewFile,BufRead *.rb highlight myPry ctermbg=red ctermfg=yellow guifg=#FF0000 guibg=#FFFF00
 
-let g:neomake_cpp_enabled_makers = ['gcc']
-let g:neomake_cpp_clang_maker = {
-   \ 'exe': 'g++++',
-   \ 'args': ['-Wall', '-Wextra', '-Weverything', '-pedantic', '-Wno-sign-conversion'],
-   \ }
+" Easy terminal mode escape
+tnoremap <C-p> <C-\><C-n>
+
+:noremap <C-T> :NERDTree<cr>:tabnew<cr>:term<cr>:vsp<cr>:term<cr>:tabprevious<cr>
+
+""""""""""""""""""""""""" Coc
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Line numbers + re-use the number gutter for error signs.
+set number
+set signcolumn=number
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+""""""""""""""""""""""""" End Coc
+
+" Font for neovide...
+let g:neovide_cursor_vfx_mode = "wireframe"
+set guifont=Fira\ Code,Noto\ Sans\ Mono\ CJK\ JP:h10
+
+" Terminal colors for neovide
+let g:terminal_color_1 = "#ed1515"
+let g:terminal_color_2 = "#11d116"
+let g:terminal_color_3 = "#f67400"
+let g:terminal_color_4 = "#1d99f3"
+let g:terminal_color_5 = "#9b59b6"
+let g:terminal_color_6 = "#1abc9c"
+let g:terminal_color_7 = "#fcfcfc"

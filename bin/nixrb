@@ -82,6 +82,11 @@ in
     src = null;
     buildInputs = [
       ruby
+      pkgs.zlib
+      pkgs.xz
+      pkgs.libmysqlclient
+      pkgs.curl
+      pkgs.libnghttp2
     ];
   }
 NIX_SHELL

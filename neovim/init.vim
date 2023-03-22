@@ -2,7 +2,6 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'Resonious/vim-phoenix'
 Plug 'Resonious/nvim-schemer'
 Plug 'preservim/nerdtree'
-# Plug 'vim-airline/vim-airline'
 Plug 'PProvost/vim-ps1'
 Plug 'rust-lang/rust.vim'
 Plug 'digitaltoad/vim-pug'
@@ -21,7 +20,9 @@ Plug 'chr4/nginx.vim'
 Plug 'mattn/emmet-vim'
 Plug 'jaredgorski/fogbell.vim'
 Plug 'eikesr/vim-flatdata'
+Plug 'tpope/vim-surround'
 Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
+"Plug 'vim-airline/vim-airline'
 "Plug 'neomake/neomake', {'branch': 'main'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
@@ -85,6 +86,7 @@ let g:tex_flavor = 'latex'
 
 " FZF!
 set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+set rtp+=~/.fzf
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -g !*.svg -g !/vendor -g !*.lock -g !/db -g !*.json -- '.shellescape(<q-args>), 1,

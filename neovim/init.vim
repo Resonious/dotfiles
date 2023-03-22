@@ -2,7 +2,7 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'Resonious/vim-phoenix'
 Plug 'Resonious/nvim-schemer'
 Plug 'preservim/nerdtree'
-Plug 'vim-airline/vim-airline'
+# Plug 'vim-airline/vim-airline'
 Plug 'PProvost/vim-ps1'
 Plug 'rust-lang/rust.vim'
 Plug 'digitaltoad/vim-pug'
@@ -153,7 +153,7 @@ nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Font for neovide...
 let g:neovide_cursor_vfx_mode = "wireframe"
-set guifont=Fira\ Code,Noto\ Sans\ Mono\ CJK\ JP:h10
+set guifont=Berkeley\ Mono,Fira\ Code,Noto\ Sans\ Mono\ CJK\ JP:h10
 
 " Terminal colors for neovide
 let g:terminal_color_1 = "#ed1515"

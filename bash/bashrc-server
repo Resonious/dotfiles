@@ -33,6 +33,19 @@ dolorcolor="\[\e[38;5;239m\]"
 endcolor="\[\e[m\]"
 PS1="$bracecolor[$color1$GITHUB_USER$color2@$color3\h $color4\W$endcolor$bracecolor]$dolorcolor\\$\[\e[m\] "
 
+# script to install FZF
+install_fzf() {
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --all
+}
+
+# script to download nvim
+install_nvim_deb {
+  curl https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb -o ~/nvim-linux64.deb
+  sudo dpkg -i ~/nvim-linux64.deb
+  rm ~/nvim-linux64.deb
+}
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).

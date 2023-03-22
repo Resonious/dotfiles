@@ -4,6 +4,13 @@
 
 SCRIPT_DIR=$(dirname "$0")
 
-# always make backups before doing copies, haha..
+# Bashrc
 cp "$HOME/.bashrc" "$HOME/.bashrc.bak"
 cp "$SCRIPT_DIR/bash/bashrc-server" "$HOME/.bashrc"
+
+# Neovim setup
+mkdir -p $HOME/.config/nvim
+cp "$SCRIPT_DIR/neovim/init.vim" "$HOME/.config/nvim/init.vim"
+
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'

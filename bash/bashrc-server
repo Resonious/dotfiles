@@ -40,7 +40,7 @@ install_fzf() {
 }
 
 # script to download nvim
-install_nvim_deb {
+install_nvim_deb() {
   curl https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb -o ~/nvim-linux64.deb
   sudo dpkg -i ~/nvim-linux64.deb
   rm ~/nvim-linux64.deb

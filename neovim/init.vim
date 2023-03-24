@@ -23,6 +23,7 @@ Plug 'eikesr/vim-flatdata'
 Plug 'tpope/vim-surround'
 Plug 'github/copilot.vim'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'norcalli/nvim-colorizer.lua'
 "Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
 "Plug 'vim-airline/vim-airline'
 "Plug 'neomake/neomake', {'branch': 'main'}
@@ -50,7 +51,7 @@ autocmd FileType gd setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 autocmd VimEnter * Schemer
 
-" lua require('colorizer').setup()
+lua require('colorizer').setup()
 lua require('lualine').setup()
 
 set background=dark

@@ -21,7 +21,9 @@ Plug 'mattn/emmet-vim'
 Plug 'jaredgorski/fogbell.vim'
 Plug 'eikesr/vim-flatdata'
 Plug 'tpope/vim-surround'
-Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
+Plug 'github/copilot.vim'
+Plug 'nvim-lualine/lualine.nvim'
+"Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
 "Plug 'vim-airline/vim-airline'
 "Plug 'neomake/neomake', {'branch': 'main'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -48,7 +50,8 @@ autocmd FileType gd setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 
 autocmd VimEnter * Schemer
 
-require 'colorizer'.setup()
+" lua require('colorizer').setup()
+lua require('lualine').setup()
 
 set background=dark
 " let g:airline_theme='badwolf'
@@ -89,7 +92,7 @@ set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
 set rtp+=~/.fzf
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case -g !*.svg -g !/vendor -g !*.lock -g !/db -g !*.json -- '.shellescape(<q-args>), 1,
+  \   'rg --column --line-number --no-heading --color=always --smart-case -g !*.svg -g !/vendor -g !/node_modules -g !*.lock -g !/db -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(), <bang>0)
 noremap <silent> <C-P> :FZF<CR>
 noremap <silent> <C-L> :Rg<CR>
@@ -124,6 +127,21 @@ autocmd BufNewFile,BufRead *.rb highlight myPry ctermbg=red ctermfg=yellow guifg
 tnoremap <C-p> <C-\><C-n>
 
 :noremap <C-T> :NERDTree<cr>:tabnew<cr>:term<cr>:vsp<cr>:term<cr>:tabprevious<cr>
+
+" Way to close all unused buffers
+function! CloseUnusedBuffers()
+  let used_buffers = []
+  for i in range(tabpagenr('$'))
+    call extend(used_buffers, tabpagebuflist(i+1))
+  endfor
+  call extend(used_buffers, win_findbuf(win_getid()))
+  for i in range(1, bufnr('$'))
+    if index(used_buffers, i) == -1
+      silent execute 'bwipeout! ' . i
+    endif
+  endfor
+endfunction
+:command CloseUnusedBuffers call CloseUnusedBuffers()
 
 """"""""""""""""""""""""" Coc
 " GoTo code navigation.

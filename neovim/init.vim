@@ -182,7 +182,7 @@ lua package.path = vim.fn.stdpath('config') .. "/?.lua;" .. package.path
 " Set up autocmd to track the last accessed terminal buffer
 autocmd BufEnter * lua require('terminal_helper').track_last_terminal_bufnr()
 
-command! Rspec lua require('terminal_helper').run_command_in_last_terminal('bin/rspec ' .. vim.fn.expand('%'))
+command! Rspec lua require('terminal_helper').run_command_in_last_terminal('bin/rspec ' .. vim.fn.expand('%') .. ':' .. vim.api.nvim_win_get_cursor(0)[1])
 command! RSpec Rspec
 
 

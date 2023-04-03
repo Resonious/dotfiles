@@ -24,6 +24,7 @@ Plug 'tpope/vim-surround'
 Plug 'github/copilot.vim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
+Plug 'ziglang/zig.vim'
 "Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
 "Plug 'vim-airline/vim-airline'
 "Plug 'neomake/neomake', {'branch': 'main'}
@@ -59,6 +60,9 @@ set background=dark
 let g:airline_powerline_fonts = 1
 
 let g:user_emmet_leader_key='<C-Z>'
+
+" this just sucks
+let g:zig_fmt_autosave = 0
 
 " tnoremap <Esc> <C-\><C-n> " Esc to exit terminal mode
 " nnoremap <A-r> i<Up><CR><C-\><C-n> " Alt+r to rerun last terminal command
@@ -115,8 +119,8 @@ let g:multi_cursor_prev_key            = '<C-k>'
 let g:multi_cursor_skip_key            = '<C-h>'
 let g:multi_cursor_quit_key            = '<Esc>'
 
-" No search result highlighting
-set nohlsearch
+" ~~No~~ YES search result highlighting
+set hlsearch
 
 " Highlight byebugs so I don't leave them around
 autocmd BufNewFile,BufRead *.rb syntax match myByebug /\<byebug\>/
@@ -171,6 +175,16 @@ set signcolumn=number
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 """"""""""""""""""""""""" End Coc
+
+" Update Lua package.path to include the Neovim config directory
+lua package.path = vim.fn.stdpath('config') .. "/?.lua;" .. package.path
+
+" Set up autocmd to track the last accessed terminal buffer
+autocmd BufEnter * lua require('terminal_helper').track_last_terminal_bufnr()
+
+command! Rspec lua require('terminal_helper').run_command_in_last_terminal('bin/rspec ' .. vim.fn.expand('%'))
+command! RSpec Rspec
+
 
 " Font for neovide...
 let g:neovide_cursor_vfx_mode = "wireframe"

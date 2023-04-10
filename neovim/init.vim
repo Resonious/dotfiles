@@ -25,11 +25,14 @@ Plug 'github/copilot.vim'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'ziglang/zig.vim'
+Plug 'jlcrochet/vim-rbs'
 "Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
 "Plug 'vim-airline/vim-airline'
 "Plug 'neomake/neomake', {'branch': 'main'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
+
+set statusline+=%{expand('%:h')}/%{expand('%:t')}
 
 set termguicolors
 syntax on
@@ -53,7 +56,7 @@ autocmd FileType gd setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=4
 autocmd VimEnter * Schemer
 
 lua require('colorizer').setup()
-lua require('lualine').setup()
+lua require('lualine').setup { sections = { lualine_c = {{ 'filename', path = 1 }}, }, }
 
 set background=dark
 " let g:airline_theme='badwolf'

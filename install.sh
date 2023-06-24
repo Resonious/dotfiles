@@ -4,6 +4,12 @@
 
 SCRIPT_DIR=$(dirname "$0")
 
+# Helix.......
+sudo apt update
+sudo apt install -y helix
+
+cp -r "$SCRIPT_DIR/helix" "$HOME/.config/"
+
 # Bashrc
 cp "$HOME/.bashrc" "$HOME/.bashrc.bak"
 cp "$SCRIPT_DIR/bash/bashrc-server" "$HOME/.bashrc"

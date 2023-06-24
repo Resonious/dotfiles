@@ -1,0 +1,13 @@
+# in <config_dir>/helix/languages.toml
+
+[[language]]
+name = "rust"
+auto-format = false
+
+[[language]]
+name = "typescript"
+language-server = { command = "typescript-language-server", args = ["--stdio"] }
+
+[[language]]
+name = "ruby"
+language-server = { command = "solargraph", args = ["stdio"] }

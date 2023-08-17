@@ -1,6 +1,6 @@
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'Resonious/vim-phoenix'
-Plug 'Resonious/nvim-schemer'
+Plug '~/p/nvim-schemer'
 Plug 'preservim/nerdtree'
 Plug 'PProvost/vim-ps1'
 Plug 'rust-lang/rust.vim'
@@ -26,7 +26,7 @@ Plug 'nvim-lualine/lualine.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'ziglang/zig.vim'
 Plug 'jlcrochet/vim-rbs'
-"Plug '~/Sources/whitebox_v0.91.0/editor_plugins/whitebox-vim'
+Plug '~/Sources/whitebox_v0.99.0/editor_plugins/whitebox-vim'
 "Plug 'vim-airline/vim-airline'
 "Plug 'neomake/neomake', {'branch': 'main'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -44,7 +44,8 @@ set shiftwidth=2
 set softtabstop=2
 
 " Except in Rust and C files where they are 4 spaces!
-autocmd FileType rs setlocal shiftwidth=4 tabstop=4 softtabstop=4
+let g:rust_recommended_style = 0
+autocmd FileType rs setlocal shiftwidth=4 tabstop=4 softtabstop=4 textwidth=99
 autocmd FileType c setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4
 autocmd FileType pug setlocal shiftwidth=4 tabstop=4 softtabstop=4

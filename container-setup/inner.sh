@@ -6,9 +6,9 @@ apt-get update
 apt-get install -y fish
 
 mkdir -p "$HOME/.config/helix"
-echo 'theme = "vim_dark_high_contrast"' > "$HOME/.config/helix/config.toml"
-echo '[editor]'                         >> "$HOME/.config/helix/config.toml"
-echo 'true-color = true'                >> "$HOME/.config/helix/config.toml"
+echo 'theme = "doom_acario_dark"' > "$HOME/.config/helix/config.toml"
+echo '[editor]'                   >> "$HOME/.config/helix/config.toml"
+echo 'true-color = true'          >> "$HOME/.config/helix/config.toml"
 
 if command -v &> /dev/null; then
   echo hx already installed. done

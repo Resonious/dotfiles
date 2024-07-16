@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+dir = File.dirname(File.expand_path(__FILE__))
+load File.expand_path(File.join(dir, "..", "container-setup", "outer.rb"))

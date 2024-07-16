@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+dir = File.dirname(File.expand_path(__FILE__))
+require File.expand_path(File.join(dir, "..", "container-setup", "containername.rb"))
+
+exec 'podman', 'exec', '--user=root', '-it', container_name, 'fish'
+

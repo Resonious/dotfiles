@@ -8,6 +8,8 @@ if c.nil?
   exit 1
 end
 
+puts "Using #{c.inspect} container"
+
 dir = File.dirname(File.expand_path(__FILE__))
 
 result = system 'podman', 'cp', File.join(dir, "inner.sh"), "#{c}:/nigelsetup.sh"

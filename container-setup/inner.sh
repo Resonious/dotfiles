@@ -10,7 +10,7 @@ echo 'theme = "doom_acario_dark"' > "$HOME/.config/helix/config.toml"
 echo '[editor]'                   >> "$HOME/.config/helix/config.toml"
 echo 'true-color = true'          >> "$HOME/.config/helix/config.toml"
 
-if command -v &> /dev/null; then
+if command -v hx; then
   echo hx already installed. done
 else
   helix=helix-24.07-x86_64-linux

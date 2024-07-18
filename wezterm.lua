@@ -10,7 +10,7 @@ config.window_decorations = "NONE"
 config.use_fancy_tab_bar = false
 config.show_new_tab_button_in_tab_bar = false
 config.hide_tab_bar_if_only_one_tab = true
-config.window_background_opacity = 1.0
+config.window_background_opacity = 0.8
 config.warn_about_missing_glyphs = false
 
 -- For example, changing the color scheme:

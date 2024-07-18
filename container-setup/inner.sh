@@ -6,9 +6,15 @@ apt-get update
 apt-get install -y fish
 
 mkdir -p "$HOME/.config/helix"
-echo 'theme = "doom_acario_dark"' > "$HOME/.config/helix/config.toml"
-echo '[editor]'                   >> "$HOME/.config/helix/config.toml"
-echo 'true-color = true'          >> "$HOME/.config/helix/config.toml"
+echo 'theme = "term16_dark"' > "$HOME/.config/helix/config.toml"
+echo '[editor]'              >> "$HOME/.config/helix/config.toml"
+echo 'true-color = true'     >> "$HOME/.config/helix/config.toml"
+
+if command -v solargraph; then
+  echo solargraph already installed
+else
+  gem install solargraph
+fi
 
 if command -v hx; then
   echo hx already installed. done

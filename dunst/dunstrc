@@ -1,0 +1,20 @@
+[global]
+frame_color = "#0073FF"
+separator_color = frame
+
+font = "Berkeley Mono 12"
+
+corner_radius = 12
+
+[urgency_low]
+background = "#1D2125CC"
+foreground = "#cdd6f4"
+
+[urgency_normal]
+background = "#1D2125CC"
+foreground = "#cdd6f4"
+
+[urgency_critical]
+background = "#1D2125CC"
+foreground = "#cdd6f4"
+frame_color = "#fab387"

@@ -6,15 +6,20 @@ font = "Berkeley Mono 12"
 
 corner_radius = 12
 
+follow = mouse
+origin = top-center
+padding = 18
+horizontal_padding = 18
+
 [urgency_low]
-background = "#1D2125CC"
+background = "#000000CC"
 foreground = "#cdd6f4"
 
 [urgency_normal]
-background = "#1D2125CC"
+background = "#000000CC"
 foreground = "#cdd6f4"
 
 [urgency_critical]
-background = "#1D2125CC"
+background = "#000000CC"
 foreground = "#cdd6f4"
 frame_color = "#fab387"

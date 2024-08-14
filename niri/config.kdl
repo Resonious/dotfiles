@@ -485,8 +485,8 @@ binds {
 
     // NIGEL: hell yes
     Mod+V { spawn "clipman" "pick" "--tool=CUSTOM" "--tool-args=fuzzel -d"; }
-    Super+Alt+O { spawn "niri" "msg" "output" "eDP-1" "off"; }
-    Super+Alt+I { spawn "niri" "msg" "output" "eDP-1" "on"; }
+    Super+Alt+O allow-when-locked=true { spawn "niri" "msg" "output" "eDP-1" "off"; }
+    Super+Alt+I allow-when-locked=true { spawn "niri" "msg" "output" "eDP-1" "on"; }
     Super+Alt+Y { spawn "niri" "msg" "action" "debug-toggle-damage"; }
 }
 

@@ -6,7 +6,7 @@ def container_name
   project_name = File.basename Dir.pwd
   container = yaml["services"].keys.first
 
-  "#{project_name}-#{container}-1"
+  "#{project_name}_#{container}_1"
 rescue e
   STDERR.puts e.message
   nil

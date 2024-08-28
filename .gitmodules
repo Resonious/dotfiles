@@ -1,0 +1,18 @@
+[submodule "nvim/pack/nvim/start/coc.nvim"]
+	path = nvim/pack/nvim/start/coc.nvim
+	url = https://github.com/neoclide/coc.nvim
+[submodule "nvim/pack/nvim/start/nvim-schemer"]
+	path = nvim/pack/nvim/start/nvim-schemer
+	url = git@github.com:Resonious/nvim-schemer
+[submodule "nvim/pack/nvim/start/nvim-treesitter"]
+	path = nvim/pack/nvim/start/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter
+[submodule "nvim/pack/nvim/start/nvim-surround"]
+	path = nvim/pack/nvim/start/nvim-surround
+	url = https://github.com/kylechui/nvim-surround
+[submodule "nvim/pack/nvim/start/plenary.nvim"]
+	path = nvim/pack/nvim/start/plenary.nvim
+	url = https://github.com/nvim-lua/plenary.nvim
+[submodule "nvim/pack/nvim/start/telescope.nvim"]
+	path = nvim/pack/nvim/start/telescope.nvim
+	url = https://github.com/nvim-telescope/telescope.nvim

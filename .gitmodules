@@ -16,3 +16,6 @@
 [submodule "nvim/pack/nvim/start/telescope.nvim"]
 	path = nvim/pack/nvim/start/telescope.nvim
 	url = https://github.com/nvim-telescope/telescope.nvim
+[submodule "nvim/pack/nvim/start/transparent.nvim"]
+	path = nvim/pack/nvim/start/transparent.nvim
+	url = https://github.com/xiyaowong/transparent.nvim

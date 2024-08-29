@@ -114,3 +114,6 @@ vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 
 require('schemer')
 SchemerGenerate()
+ -- Optional, you don't have to run setup.
+--require("transparent").clear()
+--require("transparent").toggle(true)

@@ -77,8 +77,8 @@ vim.api.nvim_set_keymap('v', '<Leader>y', '"+y', { noremap = true })
 -- doing coc instead
 -- Use `[g` and `]g` to navigate diagnostics
 -- Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
-vim.api.nvim_set_keymap("n", "[g", "<Plug>(coc-diagnostic-prev)", {silent = true})
-vim.api.nvim_set_keymap("n", "]g", "<Plug>(coc-diagnostic-next)", {silent = true})
+vim.api.nvim_set_keymap("n", "[d", "<Plug>(coc-diagnostic-prev)", {silent = true})
+vim.api.nvim_set_keymap("n", "]d", "<Plug>(coc-diagnostic-next)", {silent = true})
 
 -- GoTo code navigation
 vim.api.nvim_set_keymap("n", "gd", "<Plug>(coc-definition)", {silent = true})

@@ -118,6 +118,7 @@ require("nvim-surround").setup({
     normal = "ms",
     visual = "ms",
     delete = "md",
+    change = "mr",
   }
 })
 

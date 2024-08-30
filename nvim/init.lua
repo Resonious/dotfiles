@@ -30,6 +30,7 @@ vim.api.nvim_set_keymap('n', 'm', 'v', { noremap = true })
 vim.api.nvim_set_keymap('n', 'x', '<S-v>', { noremap = true })
 vim.api.nvim_set_keymap('v', 'x', 'j', { noremap = true })
 vim.api.nvim_set_keymap('n', 'mm', '%', { noremap = true })
+vim.api.nvim_set_keymap('v', 'mm', '%', { noremap = true })
 vim.api.nvim_set_keymap('n', 'U', '<C-r>', { noremap = true })
 
 vim.api.nvim_set_keymap('v', 'R', 'p', { noremap = true })
@@ -92,6 +93,36 @@ require'nvim-treesitter.configs'.setup {
   ensure_installed = "all",
   highlight = {
     enable = true,
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ["am"] = "@function.outer",
+        ["im"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+        ["ab"] = "@block.outer",
+        ["ib"] = "@block.inner",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+      },
+    },
   },
 }
 

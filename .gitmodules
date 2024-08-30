@@ -22,3 +22,6 @@
 [submodule "nvim/pack/nvim/start/gitsigns.nvim"]
 	path = nvim/pack/nvim/start/gitsigns.nvim
 	url = https://github.com/lewis6991/gitsigns.nvim
+[submodule "nvim/pack/nvim/start/nvim-treesitter-textobjects"]
+	path = nvim/pack/nvim/start/nvim-treesitter-textobjects
+	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects

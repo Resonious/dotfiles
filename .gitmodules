@@ -19,3 +19,6 @@
 [submodule "nvim/pack/nvim/start/transparent.nvim"]
 	path = nvim/pack/nvim/start/transparent.nvim
 	url = https://github.com/xiyaowong/transparent.nvim
+[submodule "nvim/pack/nvim/start/gitsigns.nvim"]
+	path = nvim/pack/nvim/start/gitsigns.nvim
+	url = https://github.com/lewis6991/gitsigns.nvim

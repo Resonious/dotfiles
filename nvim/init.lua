@@ -193,6 +193,8 @@ require('gitsigns').setup({
   end
 })
 
+require('autoclose').setup()
+
 require('schemer')
 SchemerGenerate()
  -- Optional, you don't have to run setup.

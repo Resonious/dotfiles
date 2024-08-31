@@ -25,3 +25,6 @@
 [submodule "nvim/pack/nvim/start/nvim-treesitter-textobjects"]
 	path = nvim/pack/nvim/start/nvim-treesitter-textobjects
 	url = https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+[submodule "nvim/pack/nvim/start/autoclose.nvim"]
+	path = nvim/pack/nvim/start/autoclose.nvim
+	url = https://github.com/m4xshen/autoclose.nvim

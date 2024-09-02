@@ -39,7 +39,7 @@ vim.api.nvim_set_keymap('n', 'gh', '0', { noremap = true })
 vim.api.nvim_set_keymap('n', 'gl', '$', { noremap = true })
 vim.api.nvim_set_keymap('n', 'ge', 'G', { noremap = true })
 vim.api.nvim_set_keymap('v', 'gh', '0', { noremap = true })
-vim.api.nvim_set_keymap('v', 'gl', '$', { noremap = true })
+vim.api.nvim_set_keymap('v', 'gl', '$h', { noremap = true })
 vim.api.nvim_set_keymap('v', 'ge', 'G', { noremap = true })
 
 -- Leader key bindings (optional, you can set this to your preference)

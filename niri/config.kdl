@@ -112,9 +112,9 @@ layout {
     }
 
     // You can change the default width of the new windows.
-    default-column-width { proportion 0.5; }
+    // default-column-width { proportion 0.5; }
     // If you leave the brackets empty, the windows themselves will decide their initial width.
-    // default-column-width {}
+    default-column-width { fixed 1000; }
 
     // By default focus ring and border are rendered as a solid background rectangle
     // behind windows. That is, they will show up through semitransparent windows.
@@ -487,9 +487,10 @@ binds {
     Mod+V { spawn "clipman" "pick" "--tool=CUSTOM" "--tool-args=fuzzel -d"; }
     Super+Alt+O allow-when-locked=true { spawn "niri" "msg" "output" "eDP-1" "off"; }
     Super+Alt+I allow-when-locked=true { spawn "niri" "msg" "output" "eDP-1" "on"; }
-    Super+Alt+Y { spawn "niri" "msg" "action" "debug-toggle-damage"; }
+    Super+Alt+Y { screenshot; }
+    Mod+M { spawn "notify-send" "Niri config" "You pressed mod+m" "--expire-time=500"; }
 }
 
 spawn-at-startup "waybar"
-spawn-at-startup "swaybg" "--image" "/home/nigel/Pictures/desktop.png" "--mode" "center"
+spawn-at-startup "swaybg" "--color" "000000" "--image" "/home/nigel/Pictures/desktop.png" "--mode" "center"
 spawn-at-startup "wl-paste" "-t" "text" "--watch" "clipman" "store"

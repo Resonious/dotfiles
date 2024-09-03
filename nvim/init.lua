@@ -87,6 +87,11 @@ vim.api.nvim_set_keymap("n", "gy", "<Plug>(coc-type-definition)", {silent = true
 vim.api.nvim_set_keymap("n", "gi", "<Plug>(coc-implementation)", {silent = true})
 vim.api.nvim_set_keymap("n", "gr", "<Plug>(coc-references)", {silent = true})
 
+-- code action
+vim.api.nvim_set_keymap("n", "<leader>ac", "<Plug>(coc-references)", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>as", "<Plug>(coc-references)", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>qf", "<Plug>(coc-references)", {silent = true})
+
 
 -- Treesitter for better syntax highlighting
 require'nvim-treesitter.configs'.setup {
@@ -142,6 +147,12 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>f', builtin.find_files, {})
 vim.keymap.set('n', '<leader>/', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
+
+-- fix panes on resize
+vim.api.nvim_create_autocmd("VimResized", {
+    pattern = "*",
+    command = "wincmd =",
+})
 
 -- surround...
 require("nvim-surround").setup({

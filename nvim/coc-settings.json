@@ -1,0 +1,9 @@
+{
+  "rust-analyzer.inlayHints.typeHints.enable": false,
+  "languageserver": {
+    "wgsl": {
+      "command": "wgsl_analyzer",
+      "filetypes": ["wgsl"]
+    }
+  }
+}

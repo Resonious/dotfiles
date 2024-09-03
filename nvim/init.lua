@@ -87,10 +87,10 @@ vim.api.nvim_set_keymap("n", "gy", "<Plug>(coc-type-definition)", {silent = true
 vim.api.nvim_set_keymap("n", "gi", "<Plug>(coc-implementation)", {silent = true})
 vim.api.nvim_set_keymap("n", "gr", "<Plug>(coc-references)", {silent = true})
 
--- code action
-vim.api.nvim_set_keymap("n", "<leader>ac", "<Plug>(coc-references)", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>as", "<Plug>(coc-references)", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>qf", "<Plug>(coc-references)", {silent = true})
+-- code actions
+vim.api.nvim_set_keymap("n", "<leader>ac", "<Plug>(coc-codeaction-cursor)", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>as", "<Plug>(coc-codeaction-source)", {silent = true})
+vim.api.nvim_set_keymap("n", "<leader>qf", "<Plug>(coc-fix-current)", {silent = true})
 
 
 -- Treesitter for better syntax highlighting

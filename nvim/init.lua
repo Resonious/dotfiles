@@ -48,6 +48,7 @@ vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true })-- Save w
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true })-- Quit with leader + q
 vim.api.nvim_set_keymap('n', '<Leader>p', '"+p', { noremap = true })
 vim.api.nvim_set_keymap('n', '<Leader>P', '"+P', { noremap = true })
+vim.api.nvim_set_keymap('n', '<Leader>d', 'ggVG', { noremap = true })
 
 -- Use K to show documentation in preview window
 function _G.show_docs()

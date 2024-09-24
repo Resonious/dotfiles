@@ -24,6 +24,22 @@ vim.g.neovide_background_color = ("#000000" .. string.format("%x", math.floor(((
 vim.cmd('syntax on')
 vim.cmd('colorscheme desert')           -- You can change this to your preferred colorscheme
 
+-- My cool commands
+vim.api.nvim_create_user_command('File', function()
+  local filename = vim.fn.expand('%:p')  -- Get absolute path of current file
+  local lineno = vim.fn.line('.')  -- Get current line number
+  local file_with_lineno = filename .. ':' .. lineno  -- Append line number
+  vim.fn.setreg('+', file_with_lineno)  -- Yank to the + register
+  print('Yanked file path with line number: ' .. file_with_lineno)
+end, {})
+
+vim.api.nvim_create_user_command('Rel', function()
+  local relpath = vim.fn.expand('%')  -- Get relative path of current file
+  local lineno = vim.fn.line('.')  -- Get current line number
+  local rel_with_lineno = relpath .. ':' .. lineno  -- Append line number
+  vim.fn.setreg('+', rel_with_lineno)  -- Yank to the + register
+  print('Yanked relative file path with line number: ' .. rel_with_lineno)
+end, {})
 
 -- Helix-like keys...
 vim.api.nvim_set_keymap('n', 'm', 'v', { noremap = true })

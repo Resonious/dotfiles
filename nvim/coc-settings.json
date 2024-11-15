@@ -5,5 +5,9 @@
       "command": "wgsl_analyzer",
       "filetypes": ["wgsl"]
     }
-  }
+  },
+  "zig.zls.path": "/home/nigel/bin/zls",
+  "zig.zls.checkForUpdate": false,
+  "zig.zls.zigLibPath": "/home/nigel/.local/share/mise/installs/zig/0.13.0/lib",
+  "zig.zigPath": "/home/nigel/.local/share/mise/installs/zig/0.13.0/bin/zig"
 }

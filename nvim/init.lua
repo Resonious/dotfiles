@@ -12,11 +12,13 @@ vim.opt.undofile = true                 -- Enable persistent undo
 vim.o.guifont = "Berkeley Mono:h12"
 vim.g.transparent_enabled = true
 
+vim.cmd('set autoindent')
+vim.cmd('set smartindent')
 vim.cmd('set expandtab')
 vim.cmd('set shiftwidth=2')
 vim.cmd('set softtabstop=2')
 
-vim.g.neovide_transparency = 0.8
+vim.g.neovide_transparency = 0.95
 vim.g.transparency = 0.88
 vim.g.neovide_background_color = ("#000000" .. string.format("%x", math.floor(((255 * vim.g.transparency) or 0.8))))
 
@@ -223,8 +225,16 @@ require('gitsigns').setup({
 
 require('autoclose').setup()
 
-require('schemer')
-SchemerGenerate()
+--require('schemer')
+--SchemerGenerate()
+require("bluloco").setup({
+  style = "light",
+  transparent = true,
+  italics = false,
+  terminal = vim.fn.has("gui_running") == 1, -- bluoco colors are enabled in gui terminals per default.
+  guicursor   = true,
+})
+vim.api.nvim_command('colorscheme bluloco-light')
  -- Optional, you don't have to run setup.
 --require("transparent").clear()
 --require("transparent").toggle(true)

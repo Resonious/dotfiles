@@ -28,3 +28,12 @@
 [submodule "nvim/pack/nvim/start/autoclose.nvim"]
 	path = nvim/pack/nvim/start/autoclose.nvim
 	url = https://github.com/m4xshen/autoclose.nvim
+[submodule "nvim/pack/nvim/start/bluloco.nvim"]
+	path = nvim/pack/nvim/start/bluloco.nvim
+	url = https://github.com/uloco/bluloco.nvim
+[submodule "nvim/pack/nvim/start/lush.nvim"]
+	path = nvim/pack/nvim/start/lush.nvim
+	url = https://github.com/rktjmp/lush.nvim
+[submodule "nvim/pack/nvim/start/onedarkpro.nvim"]
+	path = nvim/pack/nvim/start/onedarkpro.nvim
+	url = https://github.com/olimorris/onedarkpro.nvim

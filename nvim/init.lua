@@ -43,6 +43,14 @@ vim.api.nvim_create_user_command('Rel', function()
   print('Yanked relative file path with line number: ' .. rel_with_lineno)
 end, {})
 
+vim.api.nvim_create_user_command('RSpec', function()
+  local relpath = vim.fn.expand('%')  -- Get relative path of current file
+  local lineno = vim.fn.line('.')  -- Get current line number
+  local rel_with_lineno = 'bin/rspec ' .. relpath .. ':' .. lineno  -- Append line number
+  vim.fn.setreg('+', rel_with_lineno)  -- Yank to the + register
+  print('Yanked RSpec command: ' .. rel_with_lineno)
+end, {})
+
 -- Helix-like keys...
 vim.api.nvim_set_keymap('n', 'm', 'v', { noremap = true })
 vim.api.nvim_set_keymap('n', 'x', '<S-v>', { noremap = true })

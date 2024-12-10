@@ -7,7 +7,10 @@ def container_name
   container = yaml["services"].keys.first
 
   "#{project_name}_#{container}_1"
-rescue e
+rescue Errno::ENOENT => _
+  STDERR.puts "No docker-compose.yml found in #{Dir.pwd}"
+  nil
+rescue => e
   STDERR.puts e.message
   nil
 end

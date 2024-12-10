@@ -13,13 +13,15 @@
     }
   },
   {
-    "context": "Editor",
+    "context": "Editor && vim_mode == normal",
     "bindings": {
-      // "j k": ["workspace::SendKeystrokes", "escape"]
       "space w": "workspace::Save",
       "g l": "editor::MoveToEndOfLine",
       "g h": "editor::MoveToBeginningOfLine",
-      "U": "vim::Redo"
+      "g e": "editor::MoveToEnd",
+      "U": "vim::Redo",
+      "space f": "file_finder::Toggle",
+      "space k": "editor::Hover"
     }
   }
 ]

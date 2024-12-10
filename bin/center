@@ -3,5 +3,18 @@
 dir = File.dirname(File.expand_path(__FILE__))
 require File.expand_path(File.join(dir, "..", "container-setup", "containername.rb"))
 
-exec 'podman', 'exec', '--user=root', '-it', container_name, 'fish'
+if container_name
+  args = 'podman', 'exec', '--user=root', '-it', container_name, 'fish'
+else
+  args = []
+end
+
+if ARGV.length > 0
+  args << "-c" if args.first == 'podman'
+  args << ARGV.join(' ')
+end
+
+STDERR.puts args.join(' ')
+
+exec(*args)
 

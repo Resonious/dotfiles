@@ -52,11 +52,8 @@ vim.api.nvim_create_user_command('RSpec', function()
 end, {})
 
 -- Helix-like keys...
-vim.api.nvim_set_keymap('n', 'm', 'v', { noremap = true })
 vim.api.nvim_set_keymap('n', 'x', '<S-v>', { noremap = true })
 vim.api.nvim_set_keymap('v', 'x', 'j', { noremap = true })
-vim.api.nvim_set_keymap('n', 'mm', '%', { noremap = true })
-vim.api.nvim_set_keymap('v', 'mm', '%', { noremap = true })
 vim.api.nvim_set_keymap('n', 'U', '<C-r>', { noremap = true })
 
 vim.api.nvim_set_keymap('v', 'R', 'p', { noremap = true })
@@ -203,7 +200,7 @@ require('gitsigns').setup({
     end
 
     -- Navigation
-    map('n', ']g', function()
+    map('n', ']c', function()
       if vim.wo.diff then
         vim.cmd.normal({']c', bang = true})
       else
@@ -211,7 +208,7 @@ require('gitsigns').setup({
       end
     end)
 
-    map('n', '[g', function()
+    map('n', '[c', function()
       if vim.wo.diff then
         vim.cmd.normal({'[c', bang = true})
       else

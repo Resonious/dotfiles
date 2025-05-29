@@ -45,6 +45,26 @@ require("lazy").setup({
     {
       "rktjmp/lush.nvim",
     },
+    {
+      'neoclide/coc.nvim',
+      branch = 'release',
+      build = 'npm i',
+      init = function()
+        -- Optional: prevent Coc from interfering with your built-in LSP setup
+        vim.g.coc_global_extensions = {
+          'coc-json',
+          'coc-tsserver',
+          'coc-rust-analyzer',
+          -- add more as needed
+        }
+      end,
+    },
+    {
+      "nvim-neorg/neorg",
+      lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
+      version = "*", -- Pin Neorg to the latest stable release
+      config = true,
+    },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -300,3 +320,21 @@ vim.api.nvim_command('colorscheme bluloco-light')
  -- Optional, you don't have to run setup.
 --require("transparent").clear()
 --require("transparent").toggle(true)
+
+require("neorg").setup({
+    load = {
+        ["core.defaults"] = {},
+        ["core.concealer"] = {
+            config = { -- We added a `config` table!
+                icon_preset = "varied", -- And we set our option here.
+            },
+        },
+        ["core.dirman"] = {
+          config = {
+            workspaces = {
+              notes = "~/dotfiles/notes",
+            }
+          }
+        }
+    }
+})

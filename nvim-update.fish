@@ -10,3 +10,5 @@ for dir in $PWD/nvim/pack/nvim/start/*/
   git add "$dir"
 end
 
+cd $PWD/nvim/pack/nvim/start/coc.nvim && npm i
+

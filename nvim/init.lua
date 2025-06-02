@@ -86,6 +86,26 @@ vim.api.nvim_set_keymap("n", "<Leader>k", '<CMD>lua _G.show_docs()<CR>', {silent
 
 vim.api.nvim_set_keymap('v', '<Leader>y', '"+y', { noremap = true })
 
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { 'rust' },
+--   callback = function() vim.treesitter.start() end,
+-- })
+-- 
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { 'typescript' },
+--   callback = function() vim.treesitter.start() end,
+-- })
+-- 
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { 'ruby' },
+--   callback = function() vim.treesitter.start() end,
+-- })
+-- 
+-- vim.api.nvim_create_autocmd('FileType', {
+--   pattern = { 'lua' },
+--   callback = function() vim.treesitter.start() end,
+-- })
+
 -- Language Server Protocol (LSP) similar to Helix's built-in LSP support
 --require'lspconfig'.pyright.setup{}  -- Python LSP example
 --require'lspconfig'.tsserver.setup{} -- TypeScript/JavaScript LSP example
@@ -114,44 +134,6 @@ vim.api.nvim_set_keymap("n", "<leader>ac", "<Plug>(coc-codeaction-cursor)", {sil
 vim.api.nvim_set_keymap("n", "<leader>as", "<Plug>(coc-codeaction-source)", {silent = true})
 vim.api.nvim_set_keymap("n", "<leader>qf", "<Plug>(coc-fix-current)", {silent = true})
 
-
--- Treesitter for better syntax highlighting
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",
-  highlight = {
-    enable = true,
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["am"] = "@function.outer",
-        ["im"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true,
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-      },
-    },
-  },
-}
 
 -- Commenting like Helix
 vim.api.nvim_set_keymap('n', '<C-c>', ':Commentary<CR>', { noremap = true })

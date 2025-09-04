@@ -46,6 +46,9 @@ require("lazy").setup({
       "rktjmp/lush.nvim",
     },
     {
+      "skanehira/preview-uml.vim",
+    },
+    {
       'neoclide/coc.nvim',
       branch = 'release',
       build = 'npm i',
@@ -74,6 +77,8 @@ require("lazy").setup({
 })
 
 
+vim.g.preview_uml_url = 'http://localhost:8883'
+
 
 -- General settings
 vim.opt.number = true                   -- Show line numbers
@@ -95,9 +100,11 @@ vim.cmd('set expandtab')
 vim.cmd('set shiftwidth=2')
 vim.cmd('set softtabstop=2')
 
-vim.g.neovide_transparency = 0.95
+vim.g.neovide_opacity = 0.95
 vim.g.transparency = 0.88
 vim.g.neovide_background_color = ("#000000" .. string.format("%x", math.floor(((255 * vim.g.transparency) or 0.8))))
+
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
 -- Enable syntax highlighting and colorscheme
 vim.cmd('syntax on')

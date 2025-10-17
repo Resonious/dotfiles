@@ -24,21 +24,35 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    { 'neoclide/coc.nvim', branch = 'release', },
     {
-      "nvim-treesitter/nvim-treesitter",
+        'nvim-treesitter/nvim-treesitter',
+	  lazy = false,
+	  branch = 'main',
+	  build = ':TSUpdate'
     },
     {
-      "nvim-telescope/telescope.nvim",
+	    'neovim/nvim-lspconfig',
     },
+    {
+      "ibhagwan/fzf-lua",
+      -- optional for icon support
+      dependencies = { "nvim-tree/nvim-web-devicons" },
+      -- or if using mini.icons/mini.nvim
+      -- dependencies = { "nvim-mini/mini.icons" },
+      opts = {}
+    },
+
+    { 'hrsh7th/cmp-nvim-lsp' },
+    { 'hrsh7th/cmp-buffer' },
+    { 'hrsh7th/cmp-path' },
+    { 'hrsh7th/cmp-cmdline' },
+    { 'hrsh7th/nvim-cmp' },
+
     {
       "lewis6991/gitsigns.nvim",
     },
     {
       "kylechui/nvim-surround",
-    },
-    {
-      "m4xshen/autoclose.nvim",
     },
     {
       "uloco/bluloco.nvim",
@@ -49,14 +63,23 @@ require("lazy").setup({
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
+  install = { colorscheme = { "bluloco" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
 })
 
+require("bluloco").setup({
+  style = "auto",               -- "auto" | "dark" | "light"
+  transparent = true,
+  italics = false,
+  terminal = vim.fn.has("gui_running") == 1, -- bluoco colors are enabled in gui terminals per default.
+  guicursor = true,
+  rainbow_headings = false,     -- if you want different colored headings for each heading level
+})
+vim.cmd('colorscheme bluloco')
 
+require'nvim-treesitter'.install { 'ruby', 'rust', 'javascript', 'typescript', 'zig', 'swift', 'bash', 'lua', 'c', 'c++', 'vim', 'markdown' }
 
--- General settings
 vim.opt.number = true                   -- Show line numbers
 vim.opt.relativenumber = true           -- Show relative line numbers
 vim.opt.wrap = false                    -- Disable line wrapping
@@ -67,6 +90,7 @@ vim.opt.smartcase = true                -- Smart case searching
 vim.opt.swapfile = false                -- Disable swap files
 vim.opt.backup = false                  -- Disable backups
 vim.opt.undofile = true                 -- Enable persistent undo
+vim.opt.termguicolors = true
 vim.o.guifont = "Berkeley Mono:h12"
 vim.g.transparent_enabled = true
 
@@ -79,10 +103,6 @@ vim.cmd('set softtabstop=2')
 vim.g.neovide_opacity = 0.95
 vim.g.transparency = 0.88
 vim.g.neovide_background_color = "#FFFFFF"
-
--- Enable syntax highlighting and colorscheme
-vim.cmd('syntax on')
-vim.cmd('colorscheme desert')           -- You can change this to your preferred colorscheme
 
 -- My cool commands
 vim.api.nvim_create_user_command('File', function()
@@ -101,21 +121,7 @@ vim.api.nvim_create_user_command('Rel', function()
   print('Yanked relative file path with line number: ' .. rel_with_lineno)
 end, {})
 
-vim.api.nvim_create_user_command('RSpec', function()
-  local relpath = vim.fn.expand('%')  -- Get relative path of current file
-  local lineno = vim.fn.line('.')  -- Get current line number
-  local rel_with_lineno = 'bin/rspec ' .. relpath .. ':' .. lineno  -- Append line number
-  vim.fn.setreg('+', rel_with_lineno)  -- Yank to the + register
-  print('Yanked RSpec command: ' .. rel_with_lineno)
-end, {})
-
--- Helix-like keys...
-vim.api.nvim_set_keymap('n', 'x', '<S-v>', { noremap = true })
-vim.api.nvim_set_keymap('v', 'x', 'j', { noremap = true })
 vim.api.nvim_set_keymap('n', 'U', '<C-r>', { noremap = true })
-
-vim.api.nvim_set_keymap('v', 'R', 'p', { noremap = true })
-
 vim.api.nvim_set_keymap('n', 'gh', '0', { noremap = true })
 vim.api.nvim_set_keymap('n', 'gl', '$', { noremap = true })
 vim.api.nvim_set_keymap('n', 'ge', 'G', { noremap = true })
@@ -123,118 +129,36 @@ vim.api.nvim_set_keymap('v', 'gh', '0', { noremap = true })
 vim.api.nvim_set_keymap('v', 'gl', '$h', { noremap = true })
 vim.api.nvim_set_keymap('v', 'ge', 'G', { noremap = true })
 
--- Leader key bindings (optional, you can set this to your preference)
-vim.g.mapleader = " "                                                  -- Space as leader key
-vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true })-- Save with leader + w
+-- vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true })-- Save with leader + w
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true })-- Quit with leader + q
-vim.api.nvim_set_keymap('n', '<Leader>p', '"+p', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Leader>P', '"+P', { noremap = true })
-vim.api.nvim_set_keymap('n', '<Leader>d', 'ggVG', { noremap = true })
 
--- Use K to show documentation in preview window
-function _G.show_docs()
-    local cw = vim.fn.expand('<cword>')
-    if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
-        vim.api.nvim_command('h ' .. cw)
-    elseif vim.api.nvim_eval('coc#rpc#ready()') then
-        vim.fn.CocActionAsync('doHover')
-    else
-        vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
-    end
-end
-vim.api.nvim_set_keymap("n", "<Leader>k", '<CMD>lua _G.show_docs()<CR>', {silent = true})
+vim.keymap.set('n', '<Leader>w', function()
+  vim.cmd.write()
 
-vim.api.nvim_set_keymap('v', '<Leader>y', '"+y', { noremap = true })
+  vim.defer_fn(function()
+    vim.diagnostic.setloclist()
+    vim.api.nvim_set_current_win(vim.fn.win_getid(vim.fn.winnr('#')))
+  end, 100)
+end)
 
--- Language Server Protocol (LSP) similar to Helix's built-in LSP support
---require'lspconfig'.pyright.setup{}  -- Python LSP example
---require'lspconfig'.tsserver.setup{} -- TypeScript/JavaScript LSP example
---require'lspconfig'.solargraph.setup{
---	cmd = { '/home/nigel/.local/share/mise/installs/ruby/3.3.1/bin/solargraph' },
---	init_options = {
---		formatting = false
---	}
---}
---vim.lsp.set_log_level('debug')
+vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true })-- Quit with leader + q
 
--- doing coc instead
--- Use `[g` and `]g` to navigate diagnostics
--- Use `:CocDiagnostics` to get all diagnostics of current buffer in location list
-vim.api.nvim_set_keymap("n", "[d", "<Plug>(coc-diagnostic-prev)", {silent = true})
-vim.api.nvim_set_keymap("n", "]d", "<Plug>(coc-diagnostic-next)", {silent = true})
+vim.keymap.set({ 'n', 'v' }, '<Leader>f', function() FzfLua.files() end)
+vim.keymap.set({ 'n', 'v' }, '<Leader>b', function() FzfLua.buffers() end)
+vim.keymap.set({ 'n', 'v' }, '<Leader>/', function() FzfLua.grep() end)
 
--- GoTo code navigation
-vim.api.nvim_set_keymap("n", "gd", "<Plug>(coc-definition)", {silent = true})
-vim.api.nvim_set_keymap("n", "gy", "<Plug>(coc-type-definition)", {silent = true})
-vim.api.nvim_set_keymap("n", "gi", "<Plug>(coc-implementation)", {silent = true})
-vim.api.nvim_set_keymap("n", "gr", "<Plug>(coc-references)", {silent = true})
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.goto_prev()
+  vim.diagnostic.open_float()
+end)
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.goto_next()
+  vim.diagnostic.open_float()
+end)
 
--- code actions
-vim.api.nvim_set_keymap("n", "<leader>ac", "<Plug>(coc-codeaction-cursor)", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>as", "<Plug>(coc-codeaction-source)", {silent = true})
-vim.api.nvim_set_keymap("n", "<leader>qf", "<Plug>(coc-fix-current)", {silent = true})
-
-
--- Treesitter for better syntax highlighting
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "all",
-  highlight = {
-    enable = true,
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["am"] = "@function.outer",
-        ["im"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = "@class.inner",
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true,
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-      },
-      goto_previous_start = {
-        ["[m"] = "@function.outer",
-      },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-      },
-    },
-  },
-}
-
--- Commenting like Helix
-vim.api.nvim_set_keymap('n', '<C-c>', ':Commentary<CR>', { noremap = true })
-vim.api.nvim_set_keymap('v', '<C-c>', ':Commentary<CR>', { noremap = true })
-
--- Statusline
-vim.opt.laststatus = 2
-vim.opt.statusline = "%f %y %m %r %= %l,%c %p%%"
-
--- Minimal setup to replicate Helix's feel
-vim.opt.termguicolors = true
-vim.cmd('set completeopt=menu,menuone,noselect')
-
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>f', builtin.find_files, {})
-vim.keymap.set('n', '<leader>/', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>b', builtin.buffers, {})
-
--- fix panes on resize
-vim.api.nvim_create_autocmd("VimResized", {
-    pattern = "*",
-    command = "wincmd =",
-})
+vim.keymap.set('n', '<leader>e', function()
+  vim.diagnostic.setqflist()
+end)
 
 -- surround...
 require("nvim-surround").setup({
@@ -246,7 +170,7 @@ require("nvim-surround").setup({
   }
 })
 
--- git
+-- gitsigns...
 require('gitsigns').setup({
   on_attach = function(buffer)
     local gitsigns = require('gitsigns')
@@ -286,19 +210,157 @@ require('gitsigns').setup({
   end
 })
 
-require('autoclose').setup()
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("lsp_buf_conf", { clear = true }),
+  callback = function(event_context)
+    local client = vim.lsp.get_client_by_id(event_context.data.client_id)
+    -- vim.print(client.name, client.server_capabilities)
 
---require('schemer')
---SchemerGenerate()
-require("bluloco").setup({
-  style = "dark",
-  transparent = true,
-  italics = false,
-  terminal = vim.fn.has("gui_running") == 1, -- bluoco colors are enabled in gui terminals per default.
-  guicursor   = true,
-  rainbow_headings = true,
+    if not client then
+      return
+    end
+
+    local bufnr = event_context.buf
+
+    -- Mappings.
+    local map = function(mode, l, r, opts)
+      opts = opts or {}
+      opts.silent = true
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    map("n", "gr", vim.lsp.buf.references)
+
+    map("n", "gd", function()
+      vim.lsp.buf.definition {
+        on_list = function(options)
+          -- custom logic to avoid showing multiple definition when you use this style of code:
+          -- `local M.my_fn_name = function() ... end`.
+          -- See also post here: https://www.reddit.com/r/neovim/comments/19cvgtp/any_way_to_remove_redundant_definition_in_lua_file/
+
+          -- vim.print(options.items)
+          local unique_defs = {}
+          local def_loc_hash = {}
+
+          -- each item in options.items contain the location info for a definition provided by LSP server
+          for _, def_location in pairs(options.items) do
+            -- use filename and line number to uniquelly indentify a definition,
+            -- we do not expect/want multiple definition in single line!
+            local hash_key = def_location.filename .. def_location.lnum
+
+            if not def_loc_hash[hash_key] then
+              def_loc_hash[hash_key] = true
+              table.insert(unique_defs, def_location)
+            end
+          end
+
+          options.items = unique_defs
+
+          -- set the location list
+          ---@diagnostic disable-next-line: param-type-mismatch
+          vim.fn.setloclist(0, {}, " ", options)
+
+          -- open the location list when we have more than 1 definitions found,
+          -- otherwise, jump directly to the definition
+          if #options.items > 1 then
+            vim.cmd.lopen()
+          else
+            vim.cmd([[silent! lfirst]])
+          end
+        end,
+      }
+    end, { desc = "go to definition" })
+    map("n", "<C-]>", vim.lsp.buf.definition)
+    map("n", "<leader>k", function()
+      vim.lsp.buf.hover {
+        border = "single",
+        max_height = 20,
+        max_width = 130,
+        close_events = { "CursorMoved", "BufLeave", "WinLeave", "LSPDetach" },
+      }
+    end)
+    map("n", "<C-k>", vim.lsp.buf.signature_help)
+    map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "varialbe rename" })
+    map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
+    map("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, { desc = "add workspace folder" })
+    map("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, { desc = "remove workspace folder" })
+    map("n", "<leader>wl", function()
+      vim.print(vim.lsp.buf.list_workspace_folders())
+    end, { desc = "list workspace folder" })
+
+    -- Set some key bindings conditional on server capabilities
+    -- Disable ruff hover feature in favor of Pyright
+    if client.name == "ruff" then
+      client.server_capabilities.hoverProvider = false
+    end
+
+    -- Uncomment code below to enable inlay hint from language server, some LSP server supports inlay hint,
+    -- but disable this feature by default, so you may need to enable inlay hint in the LSP server config.
+    -- vim.lsp.inlay_hint.enable(true, {buffer=bufnr})
+
+    -- The blow command will highlight the current variable and its usages in the buffer.
+    if client.server_capabilities.documentHighlightProvider then
+      local gid = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+      vim.api.nvim_create_autocmd("CursorHold", {
+        group = gid,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.document_highlight()
+        end,
+      })
+
+      vim.api.nvim_create_autocmd("CursorMoved", {
+        group = gid,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.clear_references()
+        end,
+      })
+    end
+  end,
+  nested = true,
+  desc = "Configure buffer keymap and behavior based on LSP",
 })
-vim.api.nvim_command('colorscheme bluloco-dark')
- -- Optional, you don't have to run setup.
---require("transparent").clear()
---require("transparent").toggle(true)
+
+-- Enable lsp servers when they are available
+
+local get_default_capabilities = function()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+  -- required by nvim-ufo
+  capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true,
+  }
+
+  return capabilities
+end
+local capabilities = get_default_capabilities()
+
+vim.lsp.config("*", {
+  capabilities = capabilities,
+  flags = {
+    debounce_text_changes = 500,
+  },
+})
+
+vim.lsp.config('ts_ls', {})
+vim.lsp.enable('ts_ls')
+
+-- vim.lsp.enable('clangd')
+
+vim.lsp.config('ruby_lsp', {
+  settings = {
+    ['ruby-lsp'] = {},
+  },
+})
+vim.lsp.enable('ruby_lsp')
+
+vim.lsp.config('rust_analyzer', {
+  -- Server-specific settings. See `:help lsp-quickstart`
+  settings = {
+    ['rust-analyzer'] = {},
+  },
+})
+vim.lsp.enable('rust_analyzer')

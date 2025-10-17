@@ -1,0 +1,12 @@
+{
+  "autoclose.nvim": { "branch": "main", "commit": "3f86702b54a861a17d7994b2e32a7c648cb12fb1" },
+  "bluloco.nvim": { "branch": "main", "commit": "afc95b6696a0a568a5a186a7e563f6c9947d0d79" },
+  "coc.nvim": { "branch": "release", "commit": "4fc88d4f70750e6896e0de317a231e49850bb374" },
+  "gitsigns.nvim": { "branch": "main", "commit": "1ee5c1fd068c81f9dd06483e639c2aa4587dc197" },
+  "lazy.nvim": { "branch": "main", "commit": "1ea3c4085785f460fb0e46d2fe1ee895f5f9e7c1" },
+  "lush.nvim": { "branch": "main", "commit": "9c60ec2279d62487d942ce095e49006af28eed6e" },
+  "nvim-surround": { "branch": "main", "commit": "75de1782c781961e392efcca57601bf436f4d550" },
+  "nvim-treesitter": { "branch": "master", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
+  "plenary.nvim": { "branch": "master", "commit": "b9fd5226c2f76c951fc8ed5923d85e4de065e509" },
+  "telescope.nvim": { "branch": "master", "commit": "b4da76be54691e854d3e0e02c36b0245f945c2c7" }
+}

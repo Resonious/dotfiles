@@ -132,14 +132,7 @@ vim.api.nvim_set_keymap('v', 'ge', 'G', { noremap = true })
 -- vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true })-- Save with leader + w
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true })-- Quit with leader + q
 
-vim.keymap.set('n', '<Leader>w', function()
-  vim.cmd.write()
-
-  vim.defer_fn(function()
-    vim.diagnostic.setloclist()
-    vim.api.nvim_set_current_win(vim.fn.win_getid(vim.fn.winnr('#')))
-  end, 100)
-end)
+vim.keymap.set('n', '<Leader>w', vim.cmd.write)
 
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true })-- Quit with leader + q
 
@@ -157,6 +150,10 @@ vim.keymap.set('n', ']d', function()
 end)
 
 vim.keymap.set('n', '<leader>e', function()
+  vim.diagnostic.setloclist()
+end)
+
+vim.keymap.set('n', '<leader>E', function()
   vim.diagnostic.setqflist()
 end)
 
@@ -351,16 +348,65 @@ vim.lsp.enable('ts_ls')
 -- vim.lsp.enable('clangd')
 
 vim.lsp.config('ruby_lsp', {
-  settings = {
-    ['ruby-lsp'] = {},
-  },
+  settings = {},
 })
 vim.lsp.enable('ruby_lsp')
 
 vim.lsp.config('rust_analyzer', {
   -- Server-specific settings. See `:help lsp-quickstart`
   settings = {
-    ['rust-analyzer'] = {},
+    ['rust-analyzer'] = {
+      diagnostics = {
+        disabled = {
+          "inactive-code",
+        }
+      }
+    },
   },
 })
 vim.lsp.enable('rust_analyzer')
+
+vim.lsp.config('kotlin_lsp', {})
+vim.lsp.enable('kotlin_lsp')
+
+-- Set up nvim-cmp.
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      -- vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+
+      -- For `mini.snippets` users:
+      -- local insert = MiniSnippets.config.expand.insert or MiniSnippets.default_insert
+      -- insert({ body = args.body }) -- Insert at cursor
+      -- cmp.resubscribe({ "TextChangedI", "TextChangedP" })
+      -- require("cmp.config").set_onetime({ sources = {} })
+    end,
+  },
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-u>'] = cmp.mapping.scroll_docs(4),
+    ['<C-space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<C-y>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    -- { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    -- { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+  }, {
+    { name = 'buffer' },
+  })
+})

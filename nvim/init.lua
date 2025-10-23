@@ -63,7 +63,7 @@ require("lazy").setup({
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "bluloco" } },
+  install = { colorscheme = { "bluloco-light" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
 })
@@ -76,7 +76,7 @@ require("bluloco").setup({
   guicursor = true,
   rainbow_headings = false,     -- if you want different colored headings for each heading level
 })
-vim.cmd('colorscheme bluloco')
+vim.cmd('colorscheme bluloco-light')
 
 require'nvim-treesitter'.install { 'ruby', 'rust', 'javascript', 'typescript', 'zig', 'swift', 'bash', 'lua', 'c', 'c++', 'vim', 'markdown', 'gleam' }
 

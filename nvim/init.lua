@@ -94,6 +94,11 @@ vim.opt.termguicolors = true
 vim.o.guifont = "Berkeley Mono:h12"
 vim.g.transparent_enabled = true
 
+vim.api.nvim_create_autocmd("VimResized", {
+  pattern = "*",
+  command = "wincmd =",
+})
+
 vim.cmd('set autoindent')
 vim.cmd('set smartindent')
 vim.cmd('set expandtab')

@@ -166,6 +166,8 @@ vim.api.nvim_set_keymap('v', 'gh', '0', { noremap = true })
 vim.api.nvim_set_keymap('v', 'gl', '$h', { noremap = true })
 vim.api.nvim_set_keymap('v', 'ge', 'G', { noremap = true })
 
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
+
 -- vim.api.nvim_set_keymap('n', '<Leader>w', ':w<CR>', { noremap = true })-- Save with leader + w
 vim.api.nvim_set_keymap('n', '<Leader>q', ':q<CR>', { noremap = true })-- Quit with leader + q
 

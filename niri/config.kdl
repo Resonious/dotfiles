@@ -16,6 +16,9 @@ input {
             // layout "us,ru"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
         }
+
+        // Enable numlock on startup, omitting this setting disables it.
+        numlock
     }
 
     // Next sections include libinput settings.
@@ -35,11 +38,19 @@ input {
         // accel-profile "flat"
     }
 
+    trackpoint {
+        // off
+        // natural-scroll
+        // accel-speed 0.2
+        // accel-profile "flat"
+    }
+
     // Uncomment this to make the mouse warp to the center of newly focused windows.
     // warp-mouse-to-focus
 
     // Focus windows and outputs automatically when moving the mouse into them.
-    // focus-follows-mouse
+    // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
+    // focus-follows-mouse max-scroll-amount="0%"
 }
 
 // You can configure outputs by their name, which you can find
@@ -77,6 +88,18 @@ input {
     // If the position is unset or results in an overlap, the output is instead placed
     // automatically.
     position x=1280 y=0
+}
+
+output "eDP-1" {
+    scale 1.0
+    position x=0 y=0
+    mode "1920x1200@120.000"
+}
+
+output "DP-1" {
+    // position x=1920 y=0
+    scale 1.5
+    // mode "1920x1080@120.000"
 }
 
 output "DP-4" {
@@ -170,8 +193,36 @@ layout {
         active-color "#FF8C00"
         inactive-color "#505050"
 
+        // Color of the border around windows that request your attention.
+        urgent-color "#9b0000"
+
         // active-gradient from="#ffbb66" to="#ffc880" angle=45 relative-to="workspace-view"
         // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+    }
+
+    // You can enable drop shadows for windows.
+    shadow {
+        // Uncomment the next line to enable shadows.
+        // on
+
+        // By default, the shadow draws only around its window, and not behind it.
+        // Uncomment this setting to make the shadow draw behind its window.
+        // draw-behind-window true
+
+        // You can change how shadows look. The values below are in logical
+        // pixels and match the CSS box-shadow properties.
+
+        // Softness controls the shadow blur radius.
+        softness 30
+
+        // Spread expands the shadow.
+        spread 5
+
+        // Offset moves the shadow relative to the window.
+        offset x=0 y=5
+
+        // You can also change the shadow color and opacity.
+        color "#0007"
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
@@ -190,7 +241,12 @@ layout {
 // Add lines like this to spawn processes at startup.
 // Note that running niri as a session supports xdg-desktop-autostart,
 // which may be more convenient to use.
-// spawn-at-startup "alacritty" "-e" "fish"
+// spawn-at-startup "ghostty" "-e" "fish"
+
+hotkey-overlay {
+    // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+    // skip-at-startup
+}
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -228,6 +284,15 @@ window-rule {
     // You can get away with just app-id="wezterm" if you want.
     match app-id=r#"^org\.wezfurlong\.wezterm$"#
     default-column-width {}
+}
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
 }
 
 // NIGEL: junction is cool
@@ -270,13 +335,16 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
-    Mod+T { spawn "wezterm"; }
+    Mod+T { spawn "ghostty"; }
     Mod+D { spawn "fuzzel"; }
     Mod+B { spawn "firefox"; }
+    // Mod+E { spawn "/home/nigel/p/nvwrapper/target/release/nvwrapper"; }
+    Mod+E { spawn "/home/nigel/.local/bin/zed"; }
+    Mod+M { spawn "/home/nigel/bin/neovide.AppImage"; }
     Super+Alt+L { spawn "swaylock" "--image" "/home/nigel/Pictures/lockscreen.png"; }
 
     // You can also use a shell:
-    // Mod+T { spawn "bash" "-c" "notify-send hello && exec alacritty"; }
+    // Mod+T { spawn "bash" "-c" "notify-send hello && exec ghostty"; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.
     // The allow-when-locked=true property makes them work even when the session is locked.
@@ -289,7 +357,15 @@ binds {
     XF86MonBrightnessUp    allow-when-locked=true { spawn "brightnessctl" "set" "--" "+5%"; }
     XF86MonBrightnessDown  allow-when-locked=true { spawn "brightnessctl" "set" "--" "-5%"; }
 
+    // Example media keys mapping using playerctl.
+    XF86AudioPlay        allow-when-locked=true { spawn "playerctl" "play-pause"; }
+    XF86AudioStop        allow-when-locked=true { spawn "playerctl" "stop"; }
+    XF86AudioPrev        allow-when-locked=true { spawn "playerctl" "previous"; }
+    XF86AudioNext        allow-when-locked=true { spawn "playerctl" "next"; }
+
+    // Open/close the Overview: a zoomed-out view of workspaces and windows.
     Mod+O repeat=false { toggle-overview; }
+
     Mod+Q repeat=false { close-window; }
 
     Mod+Left  { focus-column-left; }
@@ -440,15 +516,23 @@ binds {
     Mod+Comma  { consume-window-into-column; }
     Mod+Period { expel-window-from-column; }
 
-    // There are also commands that consume or expel a single window to the side.
-    // Mod+BracketLeft  { consume-or-expel-window-left; }
-    // Mod+BracketRight { consume-or-expel-window-right; }
+    // The following binds move the focused window in and out of a column.
+    Mod+BracketLeft  { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
 
     Mod+R { switch-preset-column-width; }
-    Mod+Shift+R { reset-window-height; }
+    Mod+Shift+R { switch-preset-window-height; }
+    Mod+Ctrl+R { reset-window-height; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
+
+    // Expand the focused column to space not taken up by other fully visible columns.
+    Mod+Ctrl+F { expand-column-to-available-width; }
+
     Mod+C { center-column; }
+
+    // Center all fully visible columns on screen.
+    Mod+Ctrl+C { center-visible-columns; }
 
     // Finer width adjustments.
     // This command can also:
@@ -473,12 +557,24 @@ binds {
     // Mod+Space       { switch-layout "next"; }
     // Mod+Shift+Space { switch-layout "prev"; }
 
+    // Move the focused window between the floating and the tiling layout.
+    // NOTE: Mod+V is used for clipman, so using Mod+G instead
+    Mod+G       { toggle-window-floating; }
+    Mod+Shift+G { switch-focus-between-floating-and-tiling; }
+
+    // Toggle tabbed column display mode.
+    Mod+W { toggle-column-tabbed-display; }
+
     Print { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
+    // Toggle keyboard shortcuts inhibitor for remote-desktop/KVM apps.
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+E { quit; }
+    Ctrl+Alt+Delete { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
@@ -486,12 +582,23 @@ binds {
 
     // NIGEL: hell yes
     Mod+V { spawn "clipman" "pick" "--tool=CUSTOM" "--tool-args=fuzzel -d"; }
+    Mod+Ctrl+Alt+H { spawn "~/bin/dev-edit.sh" "~/r/hats"; }
+    Mod+Ctrl+Alt+C { spawn "~/bin/dev-hats.sh" "~/r/hcs"; }
+    Mod+Ctrl+Alt+F { spawn "~/bin/dev-hats.sh" "~/r/fps-neo"; }
+    Mod+Ctrl+Alt+P { spawn "sh" "-c" "echo '3T33iFkvLiiWAB2' | wl-copy -n"; }
     Super+Alt+O allow-when-locked=true { spawn "niri" "msg" "output" "eDP-1" "off"; }
     Super+Alt+I allow-when-locked=true { spawn "niri" "msg" "output" "eDP-1" "on"; }
     Super+Alt+Y { screenshot; }
-    Mod+M { spawn "notify-send" "Niri config" "You pressed mod+m" "--expire-time=500"; }
+    //Super+Alt+R { spawn "/home/nigel/Sources/xwayland-satellite/target/release/xwayland-satellite"; }
+    //Mod+M { spawn "notify-send" "Niri config" "You pressed mod+m" "--expire-time=500"; }
 }
 
 spawn-at-startup "waybar"
-spawn-at-startup "swaybg" "--color" "000000" "--image" "/home/nigel/Pictures/desktop.png" "--mode" "center"
+spawn-at-startup "swaybg" "--color" "000000" "--image" "/home/nigel/Pictures/desktop.png" "--mode" "tile"
 spawn-at-startup "wl-paste" "-t" "text" "--watch" "clipman" "store"
+spawn-at-startup "/home/nigel/Sources/xwayland-satellite/target/release/xwayland-satellite"
+spawn-at-startup "/home/nigel/bin/lockscreen"
+
+environment {
+    DISPLAY ":0"
+}

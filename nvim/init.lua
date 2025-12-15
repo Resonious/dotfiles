@@ -126,6 +126,25 @@ vim.api.nvim_create_user_command('Rel', function()
   print('Yanked relative file path with line number: ' .. rel_with_lineno)
 end, {})
 
+vim.api.nvim_create_user_command('GH', function()
+  local relpath = vim.fn.expand('%')  -- Get relative path of current file
+  local lineno = vim.fn.line('.')  -- Get current line number
+
+  -- Get the GitHub repo URL
+  local repo_url = vim.fn.system("gh repo view --jq '.url' --json 'url'")
+  repo_url = repo_url:gsub("%s+", "")  -- Trim whitespace
+
+  -- Get the current commit hash
+  local commit_hash = vim.fn.system("git rev-parse HEAD")
+  commit_hash = commit_hash:gsub("%s+", "")  -- Trim whitespace
+
+  -- Build the GitHub permalink
+  local gh_permalink = repo_url .. '/blob/' .. commit_hash .. '/' .. relpath .. '#L' .. lineno
+
+  vim.fn.setreg('+', gh_permalink)  -- Yank to the + register
+  print('Yanked GitHub permalink: ' .. gh_permalink)
+end, {})
+
 vim.api.nvim_set_keymap('n', 'U', '<C-r>', { noremap = true })
 vim.api.nvim_set_keymap('n', 'gh', '0', { noremap = true })
 vim.api.nvim_set_keymap('n', 'gl', '$', { noremap = true })

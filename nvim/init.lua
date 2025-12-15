@@ -58,6 +58,9 @@ require("lazy").setup({
       "uloco/bluloco.nvim",
     },
     {
+      "marko-cerovac/material.nvim",
+    },
+    {
       "rktjmp/lush.nvim",
     },
     {
@@ -121,10 +124,12 @@ require("lazy").setup({
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "bluloco-light" } },
+  install = { colorscheme = { "material" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
 })
+
+vim.g.material_style = "lighter"
 
 require("bluloco").setup({
   style = "auto",               -- "auto" | "dark" | "light"
@@ -134,7 +139,20 @@ require("bluloco").setup({
   guicursor = true,
   rainbow_headings = false,     -- if you want different colored headings for each heading level
 })
-vim.cmd('colorscheme bluloco-light')
+require("material").setup({
+  high_visibility = {
+    lighter = true
+  },
+  disable = {
+    background = true,
+  },
+  custom_highlights = {
+    PreProc = function(colors, _)
+      return { fg = colors.main.green }
+    end
+  }
+})
+vim.cmd('colorscheme material')
 
 require'nvim-treesitter'.install { 'ruby', 'rust', 'javascript', 'typescript', 'zig', 'swift', 'bash', 'lua', 'c', 'c++', 'vim', 'markdown', 'gleam' }
 
@@ -172,6 +190,13 @@ vim.cmd('set softtabstop=2')
 vim.g.neovide_opacity = 0.95
 vim.g.transparency = 0.88
 vim.g.neovide_background_color = "#FFFFFF"
+
+-- Automatically rebalance windows on resize
+vim.api.nvim_create_autocmd("VimResized", {
+  callback = function()
+    vim.cmd("wincmd =")
+  end,
+})
 
 -- My cool commands
 vim.api.nvim_create_user_command('File', function()

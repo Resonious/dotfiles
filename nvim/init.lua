@@ -78,7 +78,13 @@ require("bluloco").setup({
 })
 vim.cmd('colorscheme bluloco')
 
-require'nvim-treesitter'.install { 'ruby', 'rust', 'javascript', 'typescript', 'zig', 'swift', 'bash', 'lua', 'c', 'c++', 'vim', 'markdown' }
+require'nvim-treesitter'.install { 'ruby', 'rust', 'javascript', 'typescript', 'zig', 'swift', 'bash', 'lua', 'c', 'c++', 'vim', 'markdown', 'gleam' }
+
+vim.filetype.add({ extension = { gleam = 'gleam' } })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'gleam',
+  callback = function() vim.treesitter.start() end,
+})
 
 vim.opt.number = true                   -- Show line numbers
 vim.opt.relativenumber = true           -- Show relative line numbers
@@ -382,6 +388,11 @@ vim.lsp.config('ruby_lsp', {
   settings = {},
 })
 vim.lsp.enable('ruby_lsp')
+
+vim.lsp.config('gleam', {
+  cmd = { '/home/nigel/.local/share/mise/installs/gleam/latest/gleam', 'lsp' },
+})
+vim.lsp.enable('gleam')
 
 vim.lsp.config('rust_analyzer', {
   -- Server-specific settings. See `:help lsp-quickstart`

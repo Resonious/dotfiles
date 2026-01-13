@@ -61,8 +61,11 @@ RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zelli
     && mv zellij /usr/local/bin/ \
     && rm zellij-x86_64-unknown-linux-musl.tar.gz
 
-# Create a non-root user
-RUN useradd -m -s /usr/bin/fish developer
+# Create a non-root user with configurable UID (default 1000)
+ARG USER_UID=1000
+ARG USER_GID=1000
+RUN groupadd -g ${USER_GID} developer \
+    && useradd -m -s /usr/bin/fish -u ${USER_UID} -g ${USER_GID} developer
 
 # Switch to developer user for config setup
 USER developer

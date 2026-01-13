@@ -41,7 +41,7 @@ RUN curl -fsSL https://bun.sh/install | bash \
     && ln -s /usr/local/bun/bin/bun /usr/local/bin/bun \
     && ln -s /usr/local/bun/bin/bunx /usr/local/bin/bunx
 
-# Install Node.js (required for openapi-generator-cli and claude-code)
+# Install Node.js (required for openapi-generator-cli)
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
@@ -52,8 +52,9 @@ RUN npm install -g @openapitools/openapi-generator-cli \
     && openapi-generator-cli version \
     && chmod -R 777 /usr/lib/node_modules/@openapitools/openapi-generator-cli/versions
 
-# Install Claude Code
-RUN npm install -g @anthropic-ai/claude-code
+# Install Claude Code (native build for syntax highlighting)
+RUN curl -fsSL https://claude.ai/install.sh | bash \
+    && ln -s /root/.claude/bin/claude /usr/local/bin/claude
 
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \

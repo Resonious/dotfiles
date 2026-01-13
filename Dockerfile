@@ -61,25 +61,17 @@ RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zelli
     && mv zellij /usr/local/bin/ \
     && rm zellij-x86_64-unknown-linux-musl.tar.gz
 
-# Create a non-root user with configurable UID (default 1000)
-ARG USER_UID=1000
-ARG USER_GID=1000
-RUN groupadd -g ${USER_GID} developer \
-    && useradd -m -s /usr/bin/fish -u ${USER_UID} -g ${USER_GID} developer
-
-# Switch to developer user for config setup
-USER developer
-WORKDIR /home/developer
-
 # Set up Neovim config directory and copy init.lua
-RUN mkdir -p /home/developer/.config/nvim
-COPY --chown=developer:developer nvim/init.lua /home/developer/.config/nvim/init.lua
+RUN mkdir -p /root/.config/nvim
+COPY nvim/init.lua /root/.config/nvim/init.lua
 
 # Trust all directories for git (needed for bind-mounted projects with different ownership)
-RUN git config --global --add safe.directory /home/developer/project
+RUN git config --global --add safe.directory /root/project
 
 # Set fish as default shell
 ENV SHELL=/usr/bin/fish
+
+WORKDIR /root/project
 
 # Set default command
 CMD ["fish"]

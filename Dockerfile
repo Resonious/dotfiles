@@ -52,9 +52,9 @@ RUN npm install -g @openapitools/openapi-generator-cli \
     && openapi-generator-cli version \
     && chmod -R 777 /usr/lib/node_modules/@openapitools/openapi-generator-cli/versions
 
-# Install Claude Code (native build for syntax highlighting)
-RUN curl -fsSL https://claude.ai/install.sh | bash \
-    && ln -s /root/.claude/bin/claude /usr/local/bin/claude
+# Install Claude Code (native build for syntax highlighting, fallback to npm)
+RUN curl -fsSL --retry 5 --retry-delay 5 https://claude.ai/install.sh | bash \
+    || npm install -g @anthropic-ai/claude-code
 
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \

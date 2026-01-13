@@ -73,7 +73,7 @@ RUN mkdir -p /home/developer/.config/nvim
 COPY --chown=developer:developer nvim/init.lua /home/developer/.config/nvim/init.lua
 
 # Trust all directories for git (needed for bind-mounted projects with different ownership)
-RUN git config --global --add safe.directory '*'
+RUN git config --global --add safe.directory /home/developer/project
 
 # Set fish as default shell
 ENV SHELL=/usr/bin/fish

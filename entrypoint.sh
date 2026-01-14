@@ -7,6 +7,5 @@ if [ -f /tmp/claude-creds/.credentials.json ]; then
 fi
 
 # Drop to dev user using setpriv (handles TTY correctly)
-exec setpriv --reuid=dev --regid=dev --init-groups --reset-env \
-    env HOME=/home/dev SHELL=/usr/bin/fish TERM="$TERM" \
+exec setpriv --reuid=dev --regid=dev --init-groups \
     "${@:-fish}"

@@ -12,7 +12,7 @@ trap 'podman unshare chown -R 0:0 .' EXIT
 podman run -it --rm \
     -v .:/home/dev/project:Z \
     -v ~/.claude:/tmp/claude-creds:ro,Z \
-    -v ~/.cargo/registry:/usr/local/cargo/registry:Z \
+    -v jail-cargo-registry:/usr/local/cargo/registry \
     -e GIT_AUTHOR_NAME="Nigel Baillie" \
     -e GIT_COMMITTER_NAME="Nigel Baillie" \
     -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \

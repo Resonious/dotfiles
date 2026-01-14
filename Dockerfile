@@ -58,6 +58,12 @@ RUN npm install -g @openapitools/openapi-generator-cli \
 # Install Claude Code globally via npm
 RUN npm install -g @anthropic-ai/claude-code
 
+# Set up user npm global directory for persistent MCP servers etc.
+RUN mkdir -p /home/dev/.npm-global && \
+    chown dev:dev /home/dev/.npm-global
+ENV NPM_CONFIG_PREFIX=/home/dev/.npm-global \
+    PATH=/home/dev/.npm-global/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \
     && tar xzf zellij-x86_64-unknown-linux-musl.tar.gz \

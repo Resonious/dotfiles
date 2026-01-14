@@ -1,6 +1,15 @@
 #!/bin/sh
 
-exec podman run -it --rm \
+# Fix ownership for rootless podman UID mapping:
+# - Container UID 0 = Host UID 1000 (your user)
+# - Container UID 1000 = Host subuid
+# So we need to chown project files to container UID 1000 before running
+podman unshare chown -R 1000:1000 .
+
+# Restore ownership on exit (container UID 0 = host UID 1000)
+trap 'podman unshare chown -R 0:0 .' EXIT
+
+podman run -it --rm \
     -v .:/home/dev/project:Z \
     -v ~/.claude:/tmp/claude-creds:ro,Z \
     -v ~/.cargo/registry:/usr/local/cargo/registry:Z \

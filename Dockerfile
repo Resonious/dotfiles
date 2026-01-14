@@ -80,9 +80,22 @@ ENV SHELL=/usr/bin/fish
 # Skip Claude Code onboarding wizard (as dev user)
 RUN su dev -c 'echo "{\"hasCompletedOnboarding\": true, \"theme\": \"dark\"}" > /home/dev/.claude.json'
 
-# Alias claude to skip permissions (safe in this sandbox)
+# Fish shell config: alias + distinct color scheme for jail
 RUN mkdir -p /home/dev/.config/fish && \
-    echo 'alias claude="claude --dangerously-skip-permissions"' > /home/dev/.config/fish/config.fish && \
+    printf '%s\n' \
+        'alias claude="claude --dangerously-skip-permissions"' \
+        '' \
+        '# Jail color scheme - orange/red tint to distinguish from host' \
+        'set -g fish_color_user ff8700' \
+        'set -g fish_color_host ff5f00' \
+        'set -g fish_color_cwd ffaf00' \
+        'set -g fish_color_command ff8700' \
+        'set -g fish_color_param d7af87' \
+        'set -g fish_color_error ff0000' \
+        'set -g fish_color_comment 808080' \
+        'set -g fish_color_autosuggestion 585858' \
+        'set -g fish_color_valid_path --underline' \
+        > /home/dev/.config/fish/config.fish && \
     chown -R dev:dev /home/dev/.config/fish
 
 # Copy entrypoint script

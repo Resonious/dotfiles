@@ -3,6 +3,9 @@ FROM debian:bookworm-slim
 # Avoid prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Create non-root user early
+RUN useradd -m -s /usr/bin/fish -u 1000 dev
+
 # Install base dependencies
 RUN apt-get update && apt-get install -y \
     curl \
@@ -52,13 +55,8 @@ RUN npm install -g @openapitools/openapi-generator-cli \
     && openapi-generator-cli version \
     && chmod -R 777 /usr/lib/node_modules/@openapitools/openapi-generator-cli/versions
 
-# Install Claude Code (native build for syntax highlighting, fallback to npm)
-RUN curl -fsSL --retry 5 --retry-delay 5 https://claude.ai/install.sh | bash \
-    || npm install -g @anthropic-ai/claude-code
-ENV PATH="/root/.local/bin:$PATH"
-
-# Skip Claude Code onboarding wizard
-RUN echo '{"hasCompletedOnboarding": true, "theme": "dark"}' > /root/.claude.json
+# Install Claude Code globally via npm
+RUN npm install -g @anthropic-ai/claude-code
 
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \
@@ -67,16 +65,25 @@ RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zelli
     && rm zellij-x86_64-unknown-linux-musl.tar.gz
 
 # Set up Neovim config directory and copy init.lua
-RUN mkdir -p /root/.config/nvim
-COPY nvim/init.lua /root/.config/nvim/init.lua
+RUN mkdir -p /home/dev/.config/nvim
+COPY nvim/init.lua /home/dev/.config/nvim/init.lua
+
+# Fix ownership of dev user's home directory
+RUN chown -R dev:dev /home/dev
 
 # Trust all directories for git (needed for bind-mounted projects with different ownership)
-RUN git config --global --add safe.directory /root/project
+RUN git config --system --add safe.directory '*'
 
 # Set fish as default shell
 ENV SHELL=/usr/bin/fish
 
-WORKDIR /root/project
+# Skip Claude Code onboarding wizard (as dev user)
+RUN su dev -c 'echo "{\"hasCompletedOnboarding\": true, \"theme\": \"dark\"}" > /home/dev/.claude.json'
 
-# Set default command
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+WORKDIR /home/dev/project
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["fish"]

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+exec podman run -it --rm \
+    -v .:/root/project:Z \
+    -v ~/.claude:/root/.claude \
+    -v ~/.cargo/registry:/usr/local/cargo/registry:Z \
+    -e GIT_AUTHOR_NAME="Nigel Baillie" \
+    -e GIT_COMMITTER_NAME="Nigel Baillie" \
+    -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
+    -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
+    -p 8080:8080 \
+    -w /root/project \
+    jail

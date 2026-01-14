@@ -80,6 +80,11 @@ ENV SHELL=/usr/bin/fish
 # Skip Claude Code onboarding wizard (as dev user)
 RUN su dev -c 'echo "{\"hasCompletedOnboarding\": true, \"theme\": \"dark\"}" > /home/dev/.claude.json'
 
+# Alias claude to skip permissions (safe in this sandbox)
+RUN mkdir -p /home/dev/.config/fish && \
+    echo 'alias claude="claude --dangerously-skip-permissions"' > /home/dev/.config/fish/config.fish && \
+    chown -R dev:dev /home/dev/.config/fish
+
 # Copy entrypoint script
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

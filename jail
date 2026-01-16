@@ -1,23 +1,40 @@
 #!/bin/sh
 
-# Fix ownership for rootless podman UID mapping:
-# - Container UID 0 = Host UID 1000 (your user)
-# - Container UID 1000 = Host subuid
-# So we need to chown project files to container UID 1000 before running
-podman unshare chown -R 1000:1000 .
+# Container name based on current directory
+JAIL_NAME="jail-$(basename "$PWD")"
 
-# Restore ownership on exit (container UID 0 = host UID 1000)
-trap 'podman unshare chown -R 0:0 .' EXIT
+cmd="${1:-run}"
 
-podman run -it --rm \
-    -v .:/home/dev/project:Z \
-    -v ~/.claude/.credentials.json:/tmp/claude-creds.json:ro,Z \
-    -v jail-claude-home:/home/dev/.claude \
-    -v jail-cargo-registry:/usr/local/cargo/registry \
-    -v jail-npm-user:/home/dev/.npm-global \
-    -e GIT_AUTHOR_NAME="Nigel Baillie" \
-    -e GIT_COMMITTER_NAME="Nigel Baillie" \
-    -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
-    -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
-    -w /home/dev/project \
-    jail
+case "$cmd" in
+    exec)
+        exec podman exec -it "$JAIL_NAME" bash
+        ;;
+    run)
+        # Fix ownership for rootless podman UID mapping:
+        # - Container UID 0 = Host UID 1000 (your user)
+        # - Container UID 1000 = Host subuid
+        # So we need to chown project files to container UID 1000 before running
+        podman unshare chown -R 1000:1000 .
+
+        # Restore ownership on exit (container UID 0 = host UID 1000)
+        trap 'podman unshare chown -R 0:0 .' EXIT
+
+        podman run -it --rm \
+            --name "$JAIL_NAME" \
+            -v .:/home/dev/project:Z \
+            -v ~/.claude/.credentials.json:/tmp/claude-creds.json:ro,Z \
+            -v jail-claude-home:/home/dev/.claude \
+            -v jail-cargo-registry:/usr/local/cargo/registry \
+            -v jail-npm-user:/home/dev/.npm-global \
+            -e GIT_AUTHOR_NAME="Nigel Baillie" \
+            -e GIT_COMMITTER_NAME="Nigel Baillie" \
+            -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
+            -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
+            -w /home/dev/project \
+            jail
+        ;;
+    *)
+        echo "Usage: jail [run|exec]"
+        exit 1
+        ;;
+esac

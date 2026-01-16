@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     git \
     fish \
+    fzf \
     ruby \
     ruby-dev \
     openjdk-17-jre-headless \

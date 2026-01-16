@@ -4,6 +4,7 @@
 JAIL_NAME="jail-$(basename "$PWD")"
 
 cmd="${1:-run}"
+shift 2>/dev/null || true
 
 case "$cmd" in
     exec)
@@ -31,6 +32,7 @@ case "$cmd" in
             -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
             -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
             -w /home/dev/project \
+            "$@" \
             jail
         ;;
     *)

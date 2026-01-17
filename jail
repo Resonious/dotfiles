@@ -8,7 +8,7 @@ shift 2>/dev/null || true
 
 case "$cmd" in
     exec)
-        exec podman exec -it "$JAIL_NAME" bash
+        exec podman exec -it -u dev -w /home/dev/project "$JAIL_NAME" fish
         ;;
     run)
         # Fix ownership for rootless podman UID mapping:

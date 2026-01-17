@@ -24,7 +24,6 @@ case "$cmd" in
             --name "$JAIL_NAME" \
             -v .:/home/dev/project:Z \
             -v jail-claude-home:/home/dev/.claude \
-            -v ~/.claude/.credentials.json:/home/dev/.claude/.credentials.json:ro,Z \
             -v jail-cargo-registry:/usr/local/cargo/registry \
             -v jail-npm-user:/home/dev/.npm-global \
             -e GIT_AUTHOR_NAME="Nigel Baillie" \

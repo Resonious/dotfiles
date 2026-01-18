@@ -24,6 +24,16 @@ RUN apt-get update && apt-get install -y \
     openjdk-17-jre-headless \
     && rm -rf /var/lib/apt/lists/*
 
+# Install Erlang/OTP and rebar3
+RUN apt-get update && apt-get install -y erlang rebar3 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Gleam
+RUN curl -LO https://github.com/gleam-lang/gleam/releases/download/v1.14.0/gleam-v1.14.0-x86_64-unknown-linux-musl.tar.gz \
+    && tar xzf gleam-v1.14.0-x86_64-unknown-linux-musl.tar.gz \
+    && mv gleam /usr/local/bin/ \
+    && rm gleam-v1.14.0-x86_64-unknown-linux-musl.tar.gz
+
 # Install Neovim (latest stable from GitHub releases)
 RUN curl -LO https://github.com/neovim/neovim/releases/download/v0.11.1/nvim-linux-x86_64.tar.gz \
     && tar xzf nvim-linux-x86_64.tar.gz \

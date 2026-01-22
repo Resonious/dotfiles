@@ -1,4 +1,14 @@
 #!/bin/sh
+# Fix .local permissions (volume may be created as root)
+mkdir -p /home/dev/.local
+chown -R dev:dev /home/dev/.local
+
+# Install Claude Code if not present (into persistent volume)
+if [ ! -x /home/dev/.local/bin/claude ]; then
+    echo "Installing Claude Code..."
+    su dev -c 'curl -fsSL https://claude.ai/install.sh | bash'
+fi
+
 # Copy credentials into the claude home volume (always update in case token refreshed)
 if [ -f /tmp/claude-creds.json ]; then
     cp /tmp/claude-creds.json /home/dev/.claude/.credentials.json

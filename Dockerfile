@@ -66,14 +66,14 @@ RUN npm install -g @openapitools/openapi-generator-cli \
     && openapi-generator-cli version \
     && chmod -R 777 /usr/lib/node_modules/@openapitools/openapi-generator-cli/versions
 
-# Install Claude Code via native installer
-RUN curl -fsSL https://claude.ai/install.sh | bash \
-    && cp -L /root/.local/bin/claude /usr/local/bin/claude \
-    && rm -rf /root/.local
 
 # Set up user npm global directory for persistent MCP servers etc.
 RUN mkdir -p /home/dev/.npm-global && \
     chown dev:dev /home/dev/.npm-global
+
+# Set up .local directory for Claude Code (will be mounted as volume)
+RUN mkdir -p /home/dev/.local && \
+    chown dev:dev /home/dev/.local
 ENV NPM_CONFIG_PREFIX=/home/dev/.npm-global \
     PATH=/home/dev/.npm-global/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
@@ -102,6 +102,7 @@ RUN su dev -c 'echo "{\"hasCompletedOnboarding\": true, \"theme\": \"dark\"}" > 
 # Fish shell config: alias + distinct color scheme for jail
 RUN mkdir -p /home/dev/.config/fish && \
     printf '%s\n' \
+        'fish_add_path ~/.local/bin' \
         'alias claude="claude --dangerously-skip-permissions"' \
         '' \
         '# Jail color scheme - orange/red tint to distinguish from host' \

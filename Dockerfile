@@ -21,6 +21,13 @@ RUN apt-get update && apt-get install -y \
     fzf \
     ripgrep \
     openjdk-17-jre-headless \
+    bison \
+    zlib1g-dev \
+    libyaml-dev \
+    libgdbm-dev \
+    libreadline-dev \
+    libncurses-dev \
+    libffi-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Ruby via ruby-install for newer version

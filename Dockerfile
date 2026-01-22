@@ -66,15 +66,15 @@ RUN npm install -g @openapitools/openapi-generator-cli \
     && openapi-generator-cli version \
     && chmod -R 777 /usr/lib/node_modules/@openapitools/openapi-generator-cli/versions
 
-# Install Claude Code via native installer to system location
+# Install Claude Code via native installer
 RUN curl -fsSL https://claude.ai/install.sh | bash \
-    && mv /root/.claude /opt/claude
+    && mv /root/.local/bin/claude /usr/local/bin/claude
 
 # Set up user npm global directory for persistent MCP servers etc.
 RUN mkdir -p /home/dev/.npm-global && \
     chown dev:dev /home/dev/.npm-global
 ENV NPM_CONFIG_PREFIX=/home/dev/.npm-global \
-    PATH=/opt/claude/bin:/home/dev/.npm-global/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PATH=/home/dev/.npm-global/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \

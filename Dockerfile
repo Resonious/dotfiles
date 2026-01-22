@@ -67,7 +67,8 @@ RUN npm install -g @openapitools/openapi-generator-cli \
     && chmod -R 777 /usr/lib/node_modules/@openapitools/openapi-generator-cli/versions
 
 # Install Claude Code via native installer to system location
-RUN curl -fsSL https://claude.ai/install.sh | CLAUDE_INSTALL_DIR=/opt/claude bash
+RUN curl -fsSL https://claude.ai/install.sh | bash \
+    && mv /root/.claude /opt/claude
 ENV PATH=/opt/claude/bin:$PATH
 
 # Set up user npm global directory for persistent MCP servers etc.

@@ -19,10 +19,23 @@ RUN apt-get update && apt-get install -y \
     git \
     fish \
     fzf \
-    ruby \
-    ruby-dev \
+    ripgrep \
     openjdk-17-jre-headless \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Ruby via ruby-install for newer version
+RUN curl -fsSL https://github.com/postmodern/ruby-install/releases/download/v0.9.3/ruby-install-0.9.3.tar.gz | tar xz \
+    && cd ruby-install-0.9.3 \
+    && make install \
+    && cd .. && rm -rf ruby-install-0.9.3 \
+    && ruby-install --system ruby 3.3.6 \
+    && gem install bundler
+
+# Install AWS CLI v2
+RUN curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscliv2.zip \
+    && unzip -q awscliv2.zip \
+    && ./aws/install \
+    && rm -rf aws awscliv2.zip
 
 # Install Erlang/OTP and rebar3
 RUN apt-get update && apt-get install -y erlang rebar3 \

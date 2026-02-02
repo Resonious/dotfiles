@@ -2,13 +2,14 @@
 
 # Container name based on current directory
 JAIL_NAME="jail-$(basename "$PWD")"
+PROJECT_NAME="$(basename "$PWD")"
 
 cmd="${1:-run}"
 shift 2>/dev/null || true
 
 case "$cmd" in
     exec)
-        exec docker exec -it -u dev -w /home/dev/project "$JAIL_NAME" fish
+        exec docker exec -it -u dev -w "/home/dev/$PROJECT_NAME" "$JAIL_NAME" fish
         ;;
     home)
         # Mount current directory as home directory
@@ -32,7 +33,7 @@ case "$cmd" in
     run)
         docker run -it --rm \
             --name "$JAIL_NAME" \
-            -v .:/home/dev/project \
+            -v ".:/home/dev/$PROJECT_NAME" \
             -v jail-claude-home:/home/dev/.claude \
             -v jail-claude-bin:/home/dev/.local \
             -v jail-cargo-registry:/usr/local/cargo/registry \
@@ -43,7 +44,7 @@ case "$cmd" in
             -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
             -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
             -e COLORTERM=truecolor \
-            -w /home/dev/project \
+            -w "/home/dev/$PROJECT_NAME" \
             "$@" \
             jail
         ;;

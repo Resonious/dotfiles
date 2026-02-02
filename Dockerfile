@@ -94,8 +94,14 @@ RUN mkdir -p /home/dev/.npm-global && \
 # Set up .local directory for Claude Code (will be mounted as volume)
 RUN mkdir -p /home/dev/.local && \
     chown dev:dev /home/dev/.local
+
+# Set up user gem directory for Ruby
+RUN mkdir -p /home/dev/.gem && \
+    chown dev:dev /home/dev/.gem
+ENV GEM_HOME=/home/dev/.gem \
+    GEM_PATH=/home/dev/.gem:/usr/local/lib/ruby/gems/3.3.0
 ENV NPM_CONFIG_PREFIX=/home/dev/.npm-global \
-    PATH=/home/dev/.npm-global/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    PATH=/home/dev/.gem/bin:/home/dev/.npm-global/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \

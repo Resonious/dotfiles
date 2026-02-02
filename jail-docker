@@ -19,6 +19,7 @@ case "$cmd" in
             -v jail-claude-bin:/home/dev/.local \
             -v jail-cargo-registry:/usr/local/cargo/registry \
             -v jail-npm-user:/home/dev/.npm-global \
+            -v jail-gem-home:/home/dev/.gem \
             -e GIT_AUTHOR_NAME="Nigel Baillie" \
             -e GIT_COMMITTER_NAME="Nigel Baillie" \
             -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
@@ -36,6 +37,7 @@ case "$cmd" in
             -v jail-claude-bin:/home/dev/.local \
             -v jail-cargo-registry:/usr/local/cargo/registry \
             -v jail-npm-user:/home/dev/.npm-global \
+            -v jail-gem-home:/home/dev/.gem \
             -e GIT_AUTHOR_NAME="Nigel Baillie" \
             -e GIT_COMMITTER_NAME="Nigel Baillie" \
             -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \

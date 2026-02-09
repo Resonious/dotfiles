@@ -154,12 +154,12 @@ require("material").setup({
 })
 vim.cmd('colorscheme material')
 
-require'nvim-treesitter'.install { 'ruby', 'rust', 'javascript', 'typescript', 'zig', 'swift', 'bash', 'lua', 'c', 'c++', 'vim', 'markdown', 'gleam' }
+require'nvim-treesitter'.install { 'ruby', 'rust', 'javascript', 'typescript', 'zig', 'swift', 'bash', 'lua', 'c', 'c++', 'vim', 'markdown', 'hurl' }
 
-vim.filetype.add({ extension = { gleam = 'gleam' } })
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'gleam',
-  callback = function() vim.treesitter.start() end,
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
 })
 
 vim.opt.number = true                   -- Show line numbers
@@ -175,11 +175,6 @@ vim.opt.undofile = true                 -- Enable persistent undo
 vim.opt.termguicolors = true
 vim.o.guifont = "Berkeley Mono:h12"
 vim.g.transparent_enabled = true
-
-vim.api.nvim_create_autocmd("VimResized", {
-  pattern = "*",
-  command = "wincmd =",
-})
 
 vim.cmd('set autoindent')
 vim.cmd('set smartindent')
@@ -473,11 +468,6 @@ vim.lsp.config('ruby_lsp', {
   settings = {},
 })
 vim.lsp.enable('ruby_lsp')
-
-vim.lsp.config('gleam', {
-  cmd = { '/home/nigel/.local/share/mise/installs/gleam/latest/gleam', 'lsp' },
-})
-vim.lsp.enable('gleam')
 
 vim.lsp.config('rust_analyzer', {
   -- Server-specific settings. See `:help lsp-quickstart`

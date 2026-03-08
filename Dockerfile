@@ -169,6 +169,12 @@ RUN mkdir -p /home/dev/.config/fish && \
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+RUN mkdir -p /home/dev/cargo
+ENV CARGO_HOME=/home/dev/cargo
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+RUN chown -R dev:dev /home/dev
+
 WORKDIR /home/dev/project
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["fish"]

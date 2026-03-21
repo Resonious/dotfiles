@@ -92,8 +92,8 @@ RUN mkdir -p /home/dev/.npm-global && \
     chown dev:dev /home/dev/.npm-global
 
 # Set up .local directory for Claude Code (will be mounted as volume)
-RUN mkdir -p /home/dev/.local && \
-    chown dev:dev /home/dev/.local
+RUN mkdir -p /home/dev/.local/bin /home/dev/.local/share/claude && \
+    chown -R dev:dev /home/dev/.local
 
 # Set up user gem directory for Ruby
 RUN mkdir -p /home/dev/.gem && \

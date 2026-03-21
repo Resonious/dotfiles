@@ -1,9 +1,9 @@
 #!/bin/sh
-mkdir -p /home/dev/.local/bin
+mkdir -p /home/dev/.local/bin /home/dev/.local/share/claude
 
 if [ "$(id -u)" = "0" ]; then
     # Running as root (no --userns=keep-id) — fix volume permissions and drop to dev
-    chown -R dev:dev /home/dev/.local/bin
+    chown -R dev:dev /home/dev/.local/bin /home/dev/.local/share/claude
     chown -R dev:dev /home/dev/.claude 2>/dev/null || true
     chown -R dev:dev /usr/local/cargo/registry 2>/dev/null || true
     chown -R dev:dev /home/dev/.npm-global 2>/dev/null || true

@@ -112,6 +112,14 @@ RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon \
 USER root
 ENV PATH="/home/dev/.nix-profile/bin:${PATH}"
 
+# Install Helix editor
+RUN curl -LO https://github.com/helix-editor/helix/releases/download/25.07.1/helix-25.07.1-x86_64-linux.tar.xz \
+    && tar xf helix-25.07.1-x86_64-linux.tar.xz \
+    && mv helix-25.07.1-x86_64-linux /opt/helix \
+    && ln -s /opt/helix/hx /usr/local/bin/hx \
+    && rm helix-25.07.1-x86_64-linux.tar.xz
+ENV HELIX_RUNTIME=/opt/helix/runtime
+
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \
     && tar xzf zellij-x86_64-unknown-linux-musl.tar.gz \
@@ -129,6 +137,13 @@ ENV SHELL=/usr/bin/fish
 
 # Skip Claude Code onboarding wizard (as dev user)
 RUN su dev -c 'echo "{\"hasCompletedOnboarding\": true, \"theme\": \"dark\"}" > /home/dev/.claude.json'
+
+# Helix config
+RUN mkdir -p /home/dev/.config/helix && \
+    printf '%s\n' \
+        'theme = "gruvbox_dark_hard"' \
+        > /home/dev/.config/helix/config.toml && \
+    chown -R dev:dev /home/dev/.config/helix
 
 # Fish shell config: alias + distinct color scheme for jail
 RUN mkdir -p /home/dev/.config/fish && \

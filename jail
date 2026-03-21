@@ -19,6 +19,7 @@ case "$cmd" in
             -v .:/home/dev:Z \
             -v jail-claude-home:/home/dev/.claude \
             -v jail-claude-bin:/home/dev/.local/bin \
+            -v jail-claude-share:/home/dev/.local/share/claude \
             -v jail-cargo-registry:/usr/local/cargo/registry \
             -v jail-npm-user:/home/dev/.npm-global \
             -v jail-gem-home:/home/dev/.gem \
@@ -38,6 +39,7 @@ case "$cmd" in
             -v ".:/home/dev/$PROJECT_NAME:Z" \
             -v jail-claude-home:/home/dev/.claude \
             -v jail-claude-bin:/home/dev/.local/bin \
+            -v jail-claude-share:/home/dev/.local/share/claude \
             -v jail-cargo-registry:/usr/local/cargo/registry \
             -v jail-npm-user:/home/dev/.npm-global \
             -v jail-gem-home:/home/dev/.gem \

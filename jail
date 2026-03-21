@@ -13,14 +13,12 @@ case "$cmd" in
         ;;
     home)
         # Mount current directory as home directory
-        podman unshare chown -R 1000:1000 .
-        trap 'podman unshare chown -R 0:0 .' EXIT
-
         podman run -it --rm \
+            --userns=keep-id \
             --name "$JAIL_NAME" \
             -v .:/home/dev:Z \
             -v jail-claude-home:/home/dev/.claude \
-            -v jail-claude-bin:/home/dev/.local \
+            -v jail-claude-bin:/home/dev/.local/bin \
             -v jail-cargo-registry:/usr/local/cargo/registry \
             -v jail-npm-user:/home/dev/.npm-global \
             -v jail-gem-home:/home/dev/.gem \
@@ -34,20 +32,12 @@ case "$cmd" in
             jail
         ;;
     run)
-        # Fix ownership for rootless podman UID mapping:
-        # - Container UID 0 = Host UID 1000 (your user)
-        # - Container UID 1000 = Host subuid
-        # So we need to chown project files to container UID 1000 before running
-        podman unshare chown -R 1000:1000 .
-
-        # Restore ownership on exit (container UID 0 = host UID 1000)
-        trap 'podman unshare chown -R 0:0 .' EXIT
-
         podman run -it --rm \
+            --userns=keep-id \
             --name "$JAIL_NAME" \
             -v ".:/home/dev/$PROJECT_NAME:Z" \
             -v jail-claude-home:/home/dev/.claude \
-            -v jail-claude-bin:/home/dev/.local \
+            -v jail-claude-bin:/home/dev/.local/bin \
             -v jail-cargo-registry:/usr/local/cargo/registry \
             -v jail-npm-user:/home/dev/.npm-global \
             -v jail-gem-home:/home/dev/.gem \

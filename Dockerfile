@@ -103,15 +103,20 @@ ENV GEM_HOME=/home/dev/.gem \
 ENV NPM_CONFIG_PREFIX=/home/dev/.npm-global \
     PATH=/home/dev/.gem/bin:/home/dev/.npm-global/bin:/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+# Install Nix (single-user, no daemon — installs to /nix owned by dev)
+RUN mkdir -m 0755 /nix && chown dev:dev /nix
+USER dev
+RUN curl -L https://nixos.org/nix/install | sh -s -- --no-daemon \
+    && mkdir -p /home/dev/.config/nix \
+    && echo 'experimental-features = nix-command flakes' > /home/dev/.config/nix/nix.conf
+USER root
+ENV PATH="/home/dev/.nix-profile/bin:${PATH}"
+
 # Install Zellij
 RUN curl -LO https://github.com/zellij-org/zellij/releases/latest/download/zellij-x86_64-unknown-linux-musl.tar.gz \
     && tar xzf zellij-x86_64-unknown-linux-musl.tar.gz \
     && mv zellij /usr/local/bin/ \
     && rm zellij-x86_64-unknown-linux-musl.tar.gz
-
-# Set up Neovim config directory and copy init.lua
-RUN mkdir -p /home/dev/.config/nvim
-COPY nvim/init.lua /home/dev/.config/nvim/init.lua
 
 # Fix ownership of dev user's home directory
 RUN chown -R dev:dev /home/dev
@@ -128,6 +133,7 @@ RUN su dev -c 'echo "{\"hasCompletedOnboarding\": true, \"theme\": \"dark\"}" > 
 # Fish shell config: alias + distinct color scheme for jail
 RUN mkdir -p /home/dev/.config/fish && \
     printf '%s\n' \
+        'fish_add_path ~/.nix-profile/bin' \
         'fish_add_path ~/.local/bin' \
         'alias claude="claude --dangerously-skip-permissions"' \
         '' \

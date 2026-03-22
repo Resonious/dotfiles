@@ -6,8 +6,14 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Create non-root user early
 RUN useradd -m -s /usr/bin/fish -u 1000 dev
 
+# Add GitHub CLI repo
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+    > /etc/apt/sources.list.d/github-cli.list
+
 # Install base dependencies
 RUN apt-get update && apt-get install -y \
+    gh \
     curl \
     wget \
     unzip \
@@ -74,6 +80,9 @@ ENV BUN_INSTALL=/usr/local/bun
 RUN curl -fsSL https://bun.sh/install | bash \
     && ln -s /usr/local/bun/bin/bun /usr/local/bin/bun \
     && ln -s /usr/local/bun/bin/bunx /usr/local/bin/bunx
+
+# Install TypeScript and language server globally via Bun
+RUN bun install -g typescript typescript-language-server
 
 # Install Node.js (required for openapi-generator-cli)
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \

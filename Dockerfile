@@ -185,6 +185,8 @@ ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 
 RUN chown -R dev:dev /home/dev
 
+RUN mkdir -p /home/dev/.bun/install/cache && chown -R dev:dev /home/dev/.bun
+
 WORKDIR /home/dev/project
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["fish"]

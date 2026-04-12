@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
     libreadline-dev \
     libncurses-dev \
     libffi-dev \
+    libgmp-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install GitHub CLI
@@ -38,11 +39,11 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o 
     && rm -rf /var/lib/apt/lists/*
 
 # Install Ruby via ruby-install for newer version
-RUN curl -fsSL https://github.com/postmodern/ruby-install/releases/download/v0.9.3/ruby-install-0.9.3.tar.gz | tar xz \
-    && cd ruby-install-0.9.3 \
+RUN curl -fsSL https://github.com/postmodern/ruby-install/releases/download/v0.10.2/ruby-install-0.10.2.tar.gz | tar xz \
+    && cd ruby-install-0.10.2 \
     && make install \
-    && cd .. && rm -rf ruby-install-0.9.3 \
-    && ruby-install --system ruby 3.3.6 \
+    && cd .. && rm -rf ruby-install-0.10.2 \
+    && ruby-install --system ruby 4.0.2 \
     && gem install bundler
 
 # Install AWS CLI v2
@@ -82,9 +83,6 @@ RUN curl -fsSL https://bun.sh/install | bash \
     && ln -s /usr/local/bun/bin/bun /usr/local/bin/bun \
     && ln -s /usr/local/bun/bin/bunx /usr/local/bin/bunx
 
-# Install TypeScript and language server globally via Bun
-RUN bun install -g typescript typescript-language-server
-
 # Install Node.js (required for openapi-generator-cli)
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs \
@@ -96,6 +94,8 @@ RUN npm install -g @openapitools/openapi-generator-cli \
     && openapi-generator-cli version \
     && chmod -R 777 /usr/lib/node_modules/@openapitools/openapi-generator-cli/versions
 
+# npm packages we want
+RUN npm install -g typescript typescript-language-server
 
 # Set up user npm global directory for persistent MCP servers etc.
 RUN mkdir -p /home/dev/.npm-global && \
@@ -182,6 +182,9 @@ RUN chmod +x /entrypoint.sh
 RUN mkdir -p /home/dev/cargo
 ENV CARGO_HOME=/home/dev/cargo
 ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+
+# Codex install (late in the file to make updating easy enough)
+RUN npm install -g @openai/codex
 
 RUN chown -R dev:dev /home/dev
 

@@ -42,6 +42,7 @@ case "$cmd" in
             -v jail2-codex:/root/.codex \
             -v jail2-pi:/root/.pi \
             -v jail2-omp:/root/.omp \
+            -v jail2-pup:/root/.config/pup \
             -v "$SCRIPT_DIR/mise.toml:/root/.config/mise/config.toml" \
             -v .:/root \
             -e GIT_AUTHOR_NAME="Nigel Baillie" \
@@ -49,6 +50,7 @@ case "$cmd" in
             -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
             -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
             -e COLORTERM=truecolor \
+            -e D_TOKEN_STORAGE=file \
             -w /root \
             "$@" \
             "$IMAGE"
@@ -68,6 +70,7 @@ case "$cmd" in
             -v jail2-codex:/root/.codex \
             -v jail2-pi:/root/.pi \
             -v jail2-omp:/root/.omp \
+            -v jail2-pup:/root/.config/pup \
             -v "$SCRIPT_DIR/mise.toml:/root/.config/mise/config.toml" \
             -v ".:/root/$PROJECT_NAME" \
             -e GIT_AUTHOR_NAME="Nigel Baillie" \
@@ -75,6 +78,7 @@ case "$cmd" in
             -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
             -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
             -e COLORTERM=truecolor \
+            -e D_TOKEN_STORAGE=file \
             -w "/root/$PROJECT_NAME" \
             "$@" \
             "$IMAGE"

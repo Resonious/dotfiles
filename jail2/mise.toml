@@ -1,0 +1,40 @@
+# jail2 global tool config (mise).
+#
+# This file is bind-mounted into every jail at /root/.config/mise/config.toml,
+# so editing it here takes effect on the next `mise install` inside any jail —
+# NO image rebuild required. First boot installs everything into the persistent
+# `jail2-mise-data` volume; later boots are near-instant.
+#
+# To add a language/runtime: add a line below, then inside a running jail run
+# `mise install` (or just restart the jail). Tool names come from the mise
+# registry: https://mise.jdx.dev/registry.html
+#
+# Heads-up: most tools are prebuilt downloads (fast). `erlang` is the notable
+# exception — it compiles from source (via kerl) and is slow. Comment out what
+# you don't use.
+
+# NOTE: rust is intentionally NOT here — it's installed via native rustup in
+# the Dockerfile (mise's rust support wraps rustup and caused corruption across
+# fresh containers). Use `rustup`/`cargo` directly; state persists in the
+# jail2-rustup / jail2-cargo volumes.
+[tools]
+node = "lts"
+bun = "latest"
+ruby = "latest"
+java = "temurin-21"      # needed by openapi-generator-cli
+neovim = "latest"
+helix = "latest"
+zellij = "latest"
+gh = "latest"
+awscli = "latest"
+terraform = "latest"
+"github:can1357/oh-my-pi" = "latest"
+"github:DataDog/pup" = "latest"
+
+# Erlang/Gleam — erlang compiles from source (slow). Uncomment if you need them.
+# erlang = "latest"
+# gleam = "latest"
+
+[settings]
+# Don't nag about trusting the (bind-mounted) global config.
+experimental = true

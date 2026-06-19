@@ -1,0 +1,86 @@
+#!/bin/sh
+# jail2 — rootless-podman dev sandbox.
+#
+# Differences from jail v1:
+#   * Container runs as root. With rootless podman the default userns maps
+#     container root -> host user, so bind-mounted files get correct ownership
+#     WITHOUT the slow --userns=keep-id image idmap.
+#   * --security-opt label=disable avoids relabeling the whole project tree
+#     (the old `:Z` cost) on SELinux hosts.
+#   * Languages/runtimes come from mise (see mise.toml), not the image.
+
+# Resolve this script's directory so we can bind-mount mise.toml from the repo.
+# readlink -f follows symlinks, so invoking jail via a symlink (e.g. one in
+# ~/.local/bin) still finds mise.toml in the real jail2 dir.
+SCRIPT_PATH=$(readlink -f -- "$0" 2>/dev/null || echo "$0")
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$SCRIPT_PATH")" && pwd)
+
+JAIL_NAME="jail2-$(basename "$PWD")"
+PROJECT_NAME="$(basename "$PWD")"
+IMAGE="jail2"
+
+cmd="${1:-run}"
+shift 2>/dev/null || true
+
+case "$cmd" in
+    exec)
+        exec podman exec -it -w "/root/$PROJECT_NAME" "$JAIL_NAME" fish
+        ;;
+    home)
+        # Mount current directory as the whole home directory.
+        exec podman run -it --rm \
+            --security-opt label=disable \
+            --name "$JAIL_NAME" \
+            -v jail2-mise-data:/root/.local/share/mise \
+            -v jail2-claude-home:/root/.claude \
+            -v jail2-local-bin:/root/.local/bin \
+            -v jail2-claude-share:/root/.local/share/claude \
+            -v jail2-npm-global:/root/.npm-global \
+            -v jail2-bun-global:/root/.bun \
+            -v jail2-cargo:/root/.cargo \
+            -v jail2-rustup:/root/.rustup \
+            -v jail2-codex:/root/.codex \
+            -v jail2-pi:/root/.pi \
+            -v jail2-omp:/root/.omp \
+            -v "$SCRIPT_DIR/mise.toml:/root/.config/mise/config.toml" \
+            -v .:/root \
+            -e GIT_AUTHOR_NAME="Nigel Baillie" \
+            -e GIT_COMMITTER_NAME="Nigel Baillie" \
+            -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
+            -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
+            -e COLORTERM=truecolor \
+            -w /root \
+            "$@" \
+            "$IMAGE"
+        ;;
+    run)
+        exec podman run -it --rm \
+            --security-opt label=disable \
+            --name "$JAIL_NAME" \
+            -v jail2-mise-data:/root/.local/share/mise \
+            -v jail2-claude-home:/root/.claude \
+            -v jail2-local-bin:/root/.local/bin \
+            -v jail2-claude-share:/root/.local/share/claude \
+            -v jail2-npm-global:/root/.npm-global \
+            -v jail2-bun-global:/root/.bun \
+            -v jail2-cargo:/root/.cargo \
+            -v jail2-rustup:/root/.rustup \
+            -v jail2-codex:/root/.codex \
+            -v jail2-pi:/root/.pi \
+            -v jail2-omp:/root/.omp \
+            -v "$SCRIPT_DIR/mise.toml:/root/.config/mise/config.toml" \
+            -v ".:/root/$PROJECT_NAME" \
+            -e GIT_AUTHOR_NAME="Nigel Baillie" \
+            -e GIT_COMMITTER_NAME="Nigel Baillie" \
+            -e GIT_AUTHOR_EMAIL="nigel@baillie.dev" \
+            -e GIT_COMMITTER_EMAIL="nigel@baillie.dev" \
+            -e COLORTERM=truecolor \
+            -w "/root/$PROJECT_NAME" \
+            "$@" \
+            "$IMAGE"
+        ;;
+    *)
+        echo "Usage: jail [run|home|exec]"
+        exit 1
+        ;;
+esac

@@ -30,6 +30,7 @@ awscli = "latest"
 terraform = "latest"
 "github:can1357/oh-my-pi" = "latest"
 "github:DataDog/pup" = "latest"
+python = "latest"
 
 # Erlang/Gleam — erlang compiles from source (slow). Uncomment if you need them.
 # erlang = "latest"
